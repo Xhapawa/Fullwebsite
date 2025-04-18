@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCT Arbitrage - Home</title>
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #64ffda;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --light-text: #666;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a237e, #283593, #303f9f);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        .live-data {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .currency-pair {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .up {
+            color: #00e676;
+        }
+
+        .down {
+            color: #ff5252;
+        }
+
+        nav {
+            background: #f1f1f1;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .tree ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .tree li {
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        .tree li ul {
+            display: none;
+        }
+
+        .tree li.open > ul {
+            display: block;
+        }
+
+        .tree li span {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .tree li a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .tree li a:hover {
+            color: var(--secondary-color);
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        footer a {
+            color: var(--secondary-color);
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggles = document.querySelectorAll(".tree li span");
+            toggles.forEach(toggle => {
+                toggle.addEventListener("click", function () {
+                    const parentLi = this.parentElement;
+                    parentLi.classList.toggle("open");
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5"></path>
+                    <path d="M2 12l10 5 10-5"></path>
+                </svg>
+                <h1>ACCT<span>Arbitrage</span></h1>
+            </div>
+
+            <div class="live-data">
+                <span><div class="pulse"></div>Live</span>
+                <div class="currency-pair">
+                    NGN/GHS: 102 <span class="up">▲ 0.12%</span>
+                </div>
+                <div class="currency-pair">
+                    GHS/USD: 15.80 <span class="down">▼ 0.78%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tree -->
+    <nav>
+        <div class="tree">
+            <ul>
+                <li><a href="about-us.html">About Us</a></li>
+                <li>
+                    <span>Translation</span>
+                    <ul>
+                        <li><a href="translating.html">Translating</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Price for the Day</span>
+                    <ul>
+                        <li><a href="xof-price.html">XOF Price</a></li>
+                        <li><a href="naira-price.html">Naira Price</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Quote Generator</span>
+                    <ul>
+                        <li><a href="naija-quote.html">Naija Quote</a></li>
+                        <li><a href="translator.html">Translator</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Client Funding</span>
+                    <ul>
+                        <li><a href="client-dashboard.html">Client Dashboard</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>My Ledger</span>
+                    <ul>
+                        <li><a href="local-ledger.html">Local Ledger</a></li>
+                        <li><a href="online-ledger.html">Online Ledger</a></li>
+                        <li><a href="exclusive-ledger.html">Exclusive Ledger</a></li>
+                        <li><a href="locked-ledger.html">Locked Ledger</a></li>
+                        <li><a href="super-ledger.html">Super Ledger</a></li>
+                    </ul>
+                </li>
+                <li><a href="xofs-ads.html">XOFs Ads</a></li>
+                <li><a href="profit-calculator.html">Profit Calculator</a></li>
+                <li>
+                    <span>Generators</span>
+                    <ul>
+                        <li><a href="buy-generator.html">Buy Generator</a></li>
+                        <li><a href="sell-generator.html">Sell Generator</a></li>
+                        <li><a href="mp3-converter.html">MP3 Converter</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Currency Arbitrage</span>
+                    <ul>
+                        <li><a href="cfa-to-naira.html">CFA to Naira</a></li>
+                        <li><a href="naira-to-cfa.html">Naira to CFA</a></li>
+                        <li><a href="cedis-arbitrage.html">Cedis Arbitrage</a></li>
+                        <li><a href="ghs-ngn-cfa.html">GHS to NGN to CFA</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Bitcoin Mode</span>
+                    <ul>
+                        <li><a href="btc-ngn.html">BTC to NGN</a></li>
+                        <li><a href="btc-cfa.html">BTC to CFA</a></li>
+                    </ul>
+                </li>
+                <li><a href="more-ghs-booking.html">More GHS Booking</a></li>
+                <li><a href="rollover-arbitrage.html">Rollover Arbitrage</a></li>
+                <li><a href="tracker.html">Tracker</a></li>
+                <li><a href="ngn-usdt-xof-arbitrage.html">NGN/USDT/XOF Arbitrage</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 ACCT Arbitrage. All Rights Reserved. | <a href="mailto:contact@acctracker.com">Contact Us</a></p>
+    </footer>
+</body>
+</html>
