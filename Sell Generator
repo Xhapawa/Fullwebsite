@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P2P Selling Template Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9;
+      padding: 20px;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      transition: background-color 0.3s;
+    }
+
+    body.dark-mode .container {
+      background: #34495e;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+
+    body.dark-mode h2 {
+      color: #ecf0f1;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    body.dark-mode label {
+      color: #ecf0f1;
+    }
+
+    input, select, button, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+
+    body.dark-mode input,
+    body.dark-mode select,
+    body.dark-mode textarea {
+      background: #2c3e50;
+      color: #ecf0f1;
+      border-color: #7f8c8d;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      outline: none;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 20px;
+      padding: 12px;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    button.secondary {
+      background-color: #95a5a6;
+    }
+
+    button.secondary:hover {
+      background-color: #7f8c8d;
+    }
+
+    .message-container {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      word-wrap: break-word;
+      border-left: 4px solid #4caf50;
+    }
+
+    body.dark-mode .message-container {
+      background-color: #2c3e50;
+      border-left-color: #27ae60;
+    }
+
+    .english-message {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed #ddd;
+    }
+
+    body.dark-mode .english-message {
+      border-bottom-color: #7f8c8d;
+    }
+
+    .french-message {
+      color: #2c3e50;
+    }
+
+    body.dark-mode .french-message {
+      color: #ecf0f1;
+    }
+
+    .message-label {
+      font-weight: normal;
+      font-style: italic;
+      color: #7f8c8d;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 14px;
+    }
+
+    .category-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      background-color: #e8f4fc;
+      border-radius: 15px;
+      font-size: 12px;
+      margin-left: 10px;
+      color: #2980b9;
+      font-weight: 600;
+    }
+
+    body.dark-mode .category-tag {
+      background-color: #2c3e50;
+      color: #3498db;
+    }
+
+    .copy-btn {
+      background-color: #2ecc71;
+      margin-top: 15px;
+    }
+
+    .copy-btn:hover {
+      background-color: #27ae60;
+    }
+
+    #copyNotification {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #2ecc71;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1000;
+      font-weight: 500;
+    }
+
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #ecf0f1;
+    }
+
+    body.dark-mode .tab-buttons {
+      background-color: #2c3e50;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #7f8c8d;
+      transition: all 0.3s;
+    }
+
+    body.dark-mode .tab-btn {
+      color: #ecf0f1;
+    }
+
+    .tab-btn.active {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .emoji-selector {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .emoji-option {
+      font-size: 20px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: #f1f1f1;
+    }
+
+    body.dark-mode .emoji-option {
+      background: #2c3e50;
+    }
+
+    .emoji-option:hover {
+      background: #ddd;
+    }
+
+    body.dark-mode .emoji-option:hover {
+      background: #7f8c8d;
+    }
+
+    .history-container {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    body.dark-mode .history-container {
+      border-color: #7f8c8d;
+    }
+
+    .history-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+
+    body.dark-mode .history-item {
+      border-bottom-color: #7f8c8d;
+    }
+
+    .history-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    body.dark-mode .history-item:hover {
+      background-color: #2c3e50;
+    }
+
+    .settings-option {
+      margin: 15px 0;
+    }
+
+    .settings-option label {
+      display: inline-block;
+      margin-left: 10px;
+    }
+
+    .custom-template textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>P2P Selling Template Generator</h2>
+    
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-tab="sellTab">Sell Request</button>
+      <button class="tab-btn" data-tab="thanksTab">Thank You</button>
+      <button class="tab-btn" data-tab="problemTab">Problem Report</button>
+      <button class="tab-btn" data-tab="customTab">Custom Template</button>
+      <button class="tab-btn" data-tab="historyTab">History</button>
+      <button class="tab-btn" data-tab="settingsTab">Settings</button>
+    </div>
+
+    <div id="sellTab" class="tab-content active">
+      <label for="saleAmount">Crypto Sale Amount (XOF):</label>
+      <input type="number" id="saleAmount" placeholder="Enter the crypto sale amount" />
+
+      <label for="category">Message Category:</label>
+      <select id="category">
+        <option value="all">All Categories</option>
+        <option value="polite">Polite</option>
+        <option value="humble">Humble</option>
+        <option value="begging">Begging</option>
+        <option value="formal">Formal/Respectful</option>
+        <option value="urgent">Urgent/Desperate</option>
+        <option value="casual">Casual</option>
+        <option value="confident">Confident</option>
+        <option value="appreciative">Appreciative</option>
+      </select>
+
+      <label>Add Emoji:</label>
+      <div class="emoji-selector">
+        <span class="emoji-option" onclick="addEmoji('😊')">😊</span>
+        <span class="emoji-option" onclick="addEmoji('🙏')">🙏</span>
+        <span class="emoji-option" onclick="addEmoji('💸')">💸</span>
+        <span class="emoji-option" onclick="addEmoji('🚀')">🚀</span>
+        <span class="emoji-option" onclick="addEmoji('🤝')">🤝</span>
+        <span class="emoji-option" onclick="addEmoji('👍')">👍</span>
+        <span class="emoji-option" onclick="addEmoji('✨')">✨</span>
+        <span class="emoji-option" onclick="addEmoji('⏱️')">⏱️</span>
+      </div>
+
+      <button onclick="generateMessages()">Generate Messages</button>
+      <button class="secondary" onclick="saveTemplate()">Save as Custom Template</button>
+
+      <div id="messageContainer" class="message-container" style="display: none;">
+        <div class="english-message">
+          <span class="message-label">English Message: <span id="messageCategory" class="category-tag">Category</span></span>
+          <div id="englishMessage"></div>
+        </div>
+        <div class="french-message">
+          <span class="message-label">Message Français:</span>
+          <div id="frenchMessage"></div>
+        </div>
+      </div>
+
+      <button id="copyBtn" class="copy-btn" onclick="copyFrenchMessage()" style="display: none;">Copy French Message</button>
+      <button id="copyEngBtn" class="copy-btn secondary" onclick="copyEnglishMessage()" style="display: none;">Copy English Message</button>
+    </div>
+
+    <div id="thanksTab" class="tab-content">
+      <label for="thanksAmount">Crypto Sale Amount (XOF, optional):</label>
+      <input type="number" id="thanksAmount" placeholder="Enter amount for context (optional)" />
+
+      <label for="thanksCategory">Message Style:</label>
+      <select id="thanksCategory">
+        <option value="all">All Styles</option>
+        <option value="friendly">Friendly</option>
+        <option value="professional">Professional</option>
+        <option value="grateful">Grateful</option>
+        <option value="warm">Warm</option>
+        <option value="formal">Formal</option>
+        <option value="cheerful">Cheerful</option>
+        <option value="sincere">Sincere</option>
+        <option value="inviting">Inviting</option>
+      </select>
+
+      <label>Add Emoji:</label>
+      <div class="emoji-selector">
+        <span class="emoji-option" onclick="addThanksEmoji('😊')">😊</span>
+        <span class="emoji-option" onclick="addThanksEmoji('🙏')">🙏</span>
+        <span class="emoji-option" onclick="addThanksEmoji('💸')">💸</span>
+        <span class="emoji-option" onclick="addThanksEmoji('🚀')">🚀</span>
+        <span class="emoji-option" onclick="addThanksEmoji('🤝')">🤝</span>
+        <span class="emoji-option" onclick="addThanksEmoji('👍')">👍</span>
+        <span class="emoji-option" onclick="addThanksEmoji('✨')">✨</span>
+        <span class="emoji-option" onclick="addThanksEmoji('🎉')">🎉</span>
+      </div>
+
+      <button onclick="generateThankYouMessages()">Generate Thank You Messages</button>
+      <button class="secondary" onclick="saveThanksTemplate()">Save as Custom Template</button>
+
+      <div id="thanksMessageContainer" class="message-container" style="display: none;">
+        <div class="english-message">
+          <span class="message-label">English Message: <span id="thanksMessageCategory" class="category-tag">Style</span></span>
+          <div id="englishThanksMessage"></div>
+        </div>
+        <div class="french-message">
+          <span class="message-label">Message Français:</span>
+          <div id="frenchThanksMessage"></div>
+        </div>
+      </div>
+
+      <button id="copyThanksBtn" class="copy-btn" onclick="copyFrenchThanksMessage()" style="display: none;">Copy French Message</button>
+      <button id="copyThanksEngBtn" class="copy-btn secondary" onclick="copyEnglishThanksMessage()" style="display: none;">Copy English Message</button>
+    </div>
+
+    <div id="problemTab" class="tab-content">
+      <label for="problemAmount">Related Amount (XOF, optional):</label>
+      <input type="number" id="problemAmount" placeholder="Enter amount if relevant" />
+
+      <label for="problemType">Problem Type:</label>
+      <select id="problemType">
+        <option value="all">All Problem Types</option>
+        <option value="payment">Payment Issue</option>
+        <option value="release">Crypto Release Delay</option>
+        <option value="amount">Incorrect Amount</option>
+        <option value="trust">Trust Issue</option>
+        <option value="communication">Communication Issue</option>
+      </select>
+
+      <label for="problemSeverity">Severity:</label>
+      <select id="problemSeverity">
+        <option value="minor">Minor Issue</option>
+        <option value="medium">Medium Issue</option>
+        <option value="serious">Serious Issue</option>
+        <option value="urgent">Urgent Problem</option>
+      </select>
+
+      <div class="custom-template">
+        <label for="problemDetails">Additional Details (optional):</label>
+        <textarea id="problemDetails" placeholder="Add any specific details about the problem"></textarea>
+      </div>
+
+      <button onclick="generateProblemMessages()">Generate Problem Messages</button>
+      <button class="secondary" onclick="saveProblemTemplate()">Save as Custom Template</button>
+
+      <div id="problemMessageContainer" class="message-container" style="display: none;">
+        <div class="english-message">
+          <span class="message-label">English Message: <span id="problemMessageCategory" class="category-tag">Type</span></span>
+          <div id="englishProblemMessage"></div>
+        </div>
+        <div class="french-message">
+          <span class="message-label">Message Français:</span>
+          <div id="frenchProblemMessage"></div>
+        </div>
+      </div>
+
+      <button id="copyProblemBtn" class="copy-btn" onclick="copyFrenchProblemMessage()" style="display: none;">Copy French Message</button>
+      <button id="copyProblemEngBtn" class="copy-btn secondary" onclick="copyEnglishProblemMessage()" style="display: none;">Copy English Message</button>
+    </div>
+
+    <div id="customTab" class="tab-content">
+      <label for="customTemplateName">Template Name:</label>
+      <input type="text" id="customTemplateName" placeholder="Give your template a name">
+
+      <label for="customEnglish">English Template:</label>
+      <textarea id="customEnglish" placeholder="Enter your English template here. Use {{saleAmount}} or {{totalAmount}} as placeholders."></textarea>
+
+      <label for="customFrench">French Template:</label>
+      <textarea id="customFrench" placeholder="Enter your French template here. Use {{saleAmount}} or {{totalAmount}} as placeholders."></textarea>
+
+      <label for="customCategory">Category:</label>
+      <select id="customCategory">
+        <option value="sell">Sell Request</option>
+        <option value="thanks">Thank You</option>
+        <option value="problem">Problem Report</option>
+        <option value="other">Other</option>
+      </select>
+
+      <button onclick="saveCustomTemplate()">Save Custom Template</button>
+      <button class="secondary" onclick="loadCustomTemplates()">Load My Templates</button>
+
+      <div id="customTemplatesContainer" style="margin-top: 20px;"></div>
+    </div>
+
+    <div id="historyTab" class="tab-content">
+      <h3>Message History</h3>
+      <div id="historyList" class="history-container"></div>
+      <button onclick="clearHistory()" style="margin-top: 15px;">Clear History</button>
+    </div>
+
+    <div id="settingsTab" class="tab-content">
+      <h3>Settings</h3>
+      
+      <div class="settings-option">
+        <input type="checkbox" id="saveHistory" checked>
+        <label for="saveHistory">Save message history</label>
+      </div>
+      
+      <div class="settings-option">
+        <input type="checkbox" id="darkMode">
+        <label for="darkMode">Enable dark mode</label>
+      </div>
+      
+      <div class="settings-option">
+        <input type="checkbox" id="autoCopy" checked>
+        <label for="autoCopy">Auto-copy French message</label>
+      </div>
+      
+      <div class="settings-option">
+        <input type="checkbox" id="showEnglish" checked>
+        <label for="showEnglish">Show English version</label>
+      </div>
+      
+      <div class="settings-option">
+        <label for="defaultCategory">Default category:</label>
+        <select id="defaultCategory">
+          <option value="polite">Polite</option>
+          <option value="humble">Humble</option>
+          <option value="formal">Formal</option>
+          <option value="casual">Casual</option>
+        </select>
+      </div>
+      
+      <button onclick="saveSettings()">Save Settings</button>
+      <button class="secondary" onclick="resetSettings()">Reset to Defaults</button>
+    </div>
+  </div>
+
+  <div id="copyNotification">Message copied successfully! ✓</div>
+
+  <script>
+    // Settings and storage
+    let settings = JSON.parse(localStorage.getItem('cryptoSellSettings')) || {
+      saveHistory: true,
+      darkMode: false,
+      autoCopy: true,
+      showEnglish: true,
+      defaultCategory: 'polite'
+    };
+    let messageHistory = JSON.parse(localStorage.getItem('cryptoSellHistory')) || [];
+    let customTemplates = JSON.parse(localStorage.getItem('cryptoSellTemplates')) || [];
+    let selectedEmoji = '';
+    let selectedThanksEmoji = '';
+
+    // Message templates
+    const messageTemplates = {
+      polite: {
+        en: [
+          "Please, could you send {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto? It's a small addition, and I'm eager to proceed. I release crypto swiftly. Can we trade? Positive feedback would be appreciated. {{emoji}}",
+          "Kindly, would you send {{totalAmount}} XOF with my 1% fee for the {{saleAmount}} XOF crypto? It's a minor extra, and I'd love to complete this deal. I ensure quick release. Shall we proceed? Please leave positive feedback. {{emoji}}",
+          "May I request you send {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto? It's just a slight addition, and I'm ready to trade. I release crypto fast. Can we do business? Positive feedback welcomed. {{emoji}}",
+          "I'd appreciate it if you could send {{totalAmount}} XOF, with my 1% fee, for the {{saleAmount}} XOF crypto. It's a small amount more, and I'm set for a smooth trade. I release quickly. Let's trade? Feedback appreciated. {{emoji}}",
+          "Please, would you consider sending {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto? It's a modest extra, and I'm excited to deal. I release crypto promptly. Can we proceed? Positive feedback valued. {{emoji}}"
+        ],
+        fr: [
+          "S'il vous plaît, pourriez-vous envoyer {{totalAmount}} XOF, incluant mes frais de 1%, pour le crypto de {{saleAmount}} XOF ? C'est un petit supplément, et je suis impatient de procéder. Je libère la crypto rapidement. Pouvons-nous échanger ? Un avis positif serait apprécié. {{emoji}}",
+          "Veuillez envoyer {{totalAmount}} XOF avec mes frais de 1% pour le crypto de {{saleAmount}} XOF. C'est un léger extra, et j'aimerais conclure cette affaire. Je garantis une libération rapide. Pouvons-nous avancer ? Laissez un avis positif. {{emoji}}",
+          "Puis-je vous demander d'envoyer {{totalAmount}} XOF, incluant mes frais de 1%, pour le crypto de {{saleAmount}} XOF ? C'est juste un petit supplément, et je suis prêt à échanger. Je libère vite. Pouvons-nous faire affaire ? Avis positif bienvenu. {{emoji}}",
+          "J'apprécierais si vous pouviez envoyer {{totalAmount}} XOF, avec mes frais de 1%, pour le crypto de {{saleAmount}} XOF. C'est un peu plus, et je suis prêt pour un échange fluide. Je libère rapidement. On échange ? Feedback apprécié. {{emoji}}",
+          "Voudriez-vous envisager d'envoyer {{totalAmount}} XOF, incluant mes frais de 1%, pour le crypto de {{saleAmount}} XOF ? C'est un extra modeste, et je suis excité à l'idée de traiter. Je libère promptement. Pouvons-nous avancer ? Avis positif valorisé. {{emoji}}"
+        ]
+      },
+      humble: {
+        en: [
+          "I humbly ask if you could send {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto. It's a small extra, and I'd be grateful to proceed. I release crypto quickly. Can we trade? Positive feedback appreciated. {{emoji}}",
+          "With respect, could you send {{totalAmount}} XOF with my 1% fee for the {{saleAmount}} XOF crypto? It's just a little more, and I'm eager to deal. I release fast. May we proceed? Please leave positive feedback. {{emoji}}",
+          "I kindly request {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto. It's a minor addition, and I'd truly appreciate trading. I release crypto promptly. Can we do business? Feedback welcomed. {{emoji}}",
+          "Humbly, would you send {{totalAmount}} XOF, with my 1% fee, for the {{saleAmount}} XOF crypto? It's a slight extra, and I'm ready for a smooth trade. I release quickly. Let's trade? Positive feedback valued. {{emoji}}",
+          "I respectfully ask for {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto. It's a small amount more, and I'd be thankful to proceed. I release crypto swiftly. Can we deal? Feedback appreciated. {{emoji}}"
+        ],
+        fr: [
+          "Je demande humblement si vous pourriez envoyer {{totalAmount}} XOF, incluant mes frais de 1%, pour le crypto de {{saleAmount}} XOF. C'est un petit extra, et je serais reconnaissant de procéder. Je libère la crypto vite. Pouvons-nous échanger ? Avis positif apprécié. {{emoji}}",
+          "Avec respect, pourriez-vous envoyer {{totalAmount}} XOF avec mes frais de 1% pour le crypto de {{saleAmount}} XOF ? C'est juste un peu plus, et je suis impatient de traiter. Je libère rapidement. Pouvons-nous avancer ? Laissez un avis positif. {{emoji}}",
+          "Je demande gentiment {{totalAmount}} XOF, incluant mes frais de 1%, pour le crypto de {{saleAmount}} XOF. C'est un léger supplément, et j'apprécierais vraiment d'échanger. Je libère promptement. Pouvons-nous faire affaire ? Feedback bienvenu. {{emoji}}",
+          "Humblement, voudriez-vous envoyer {{totalAmount}} XOF, avec mes frais de 1%, pour le crypto de {{saleAmount}} XOF ? C'est un petit extra, et je suis prêt pour un échange fluide. Je libère vite. On échange ? Avis positif valorisé. {{emoji}}",
+          "Je demande respectueusement {{totalAmount}} XOF, incluant mes frais de 1%, pour le crypto de {{saleAmount}} XOF. C'est un peu plus, et je serais reconnaissant de procéder. Je libère rapidement. Pouvons-nous traiter ? Feedback apprécié. {{emoji}}"
+        ]
+      },
+      begging: {
+        en: [
+          "Please, I beg you, could you send {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto? It's a small extra, and I'm desperate to trade. I release crypto fast. Can we deal? Positive feedback appreciated. {{emoji}}",
+          "I'm pleading, would you send {{totalAmount}} XOF with my 1% fee for the {{saleAmount}} XOF crypto? It's just a little more, and I need this to work. I release quickly. Please, let's trade? Feedback welcomed. {{emoji}}",
+          "I earnestly ask for {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto. It's a minor addition, and I'm hoping to proceed. I release crypto swiftly. Can we do business? Positive feedback valued. {{emoji}}",
+          "Please, could you kindly send {{totalAmount}} XOF, with my 1% fee, for the {{saleAmount}} XOF crypto? It's a slight extra, and I'm really counting on this. I release fast. Let's trade? Feedback appreciated. {{emoji}}",
+          "I beg you to send {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto. It's a small amount more, and I'm eager to deal. I release crypto promptly. Can we proceed? Positive feedback welcomed. {{emoji}}"
+        ],
+        fr: [
+          "S'il vous plaît, je vous supplie, pourriez-vous envoyer {{totalAmount}} XOF, incluant mes frais de 1%, pour le crypto de {{saleAmount}} XOF ? C'est un petit extra, et je suis désespéré d'échanger. Je libère vite. Pouvons-nous traiter ? Avis positif apprécié. {{emoji}}",
+          "Je vous implore, voudriez-vous envoyer {{totalAmount}} XOF avec mes frais de 1% pour le crypto de {{saleAmount}} XOF ? C'est juste un peu plus, et j'ai besoin que ça marche. Je libère rapidement. S'il vous plaît, échangeons ? Feedback bienvenu. {{emoji}}",
+          "Je demande sincèrement {{totalAmount}} XOF, incluant mes frais de 1%, pour le crypto de {{saleAmount}} XOF. C'est un léger supplément, et j'espère avancer. Je libère promptement. Pouvons-nous faire affaire ? Avis positif valorisé. {{emoji}}",
+          "S'il vous plaît, pourriez-vous gentiment envoyer {{totalAmount}} XOF, avec mes frais de 1%, pour le crypto de {{saleAmount}} XOF ? C'est un peu plus, et je compte vraiment là-dessus. Je libère vite. On échange ? Feedback apprécié. {{emoji}}",
+          "Je vous supplie d'envoyer {{totalAmount}} XOF, incluant mes frais de 1%, pour le crypto de {{saleAmount}} XOF. C'est un petit extra, et je suis impatient de traiter. Je libère promptement. Pouvons-nous avancer ? Avis positif bienvenu. {{emoji}}"
+        ]
+      },
+      formal: {
+        en: [
+          "Dear Sir/Madam, I kindly request you to send {{totalAmount}} XOF, including my 1% fee, for the {{saleAmount}} XOF crypto transaction. I assure you of prompt release upon confirmation. Your cooperation is highly appreciated. {{emoji}}",
+          "Respected buyer, please transfer {{totalAmount}} XOF (including my 1% fee) for the {{saleAmount}} XOF crypto. I guarantee immediate release upon payment verification. Looking forward to a successful transaction. {{emoji}}",
+          "I formally request the transfer of {{totalAmount}} XOF (inclusive of my 1% fee) for the {{saleAmount}} XOF crypto. I will release the crypto immediately upon payment confirmation. Thank you for your business. {{emoji}}",
+          "Good day. Please proceed with the payment of {{totalAmount}} XOF (including my 1% fee) for the {{saleAmount}} XOF crypto. I will execute the release without delay upon payment verification. {{emoji}}",
+          "Respected client, kindly remit {{totalAmount}} XOF (1% fee included) for the {{saleAmount}} XOF crypto. I assure you of swift processing and immediate release upon payment confirmation. {{emoji}}"
+        ],
+        fr: [
+          "Cher Monsieur/Madame, je vous prie de bien vouloir envoyer {{totalAmount}} XOF, incluant mes frais de 1%, pour la transaction crypto de {{saleAmount}} XOF. Je vous assure une libération rapide dès confirmation. Votre coopération est grandement appréciée. {{emoji}}",
+          "Cher acheteur, veuillez transférer {{totalAmount}} XOF (incluant mes frais de 1%) pour le crypto de {{saleAmount}} XOF. Je garantis une libération immédiate après vérification du paiement. Dans l'attente d'une transaction réussie. {{emoji}}",
+          "Je demande formellement le transfert de {{totalAmount}} XOF (frais de 1% inclus) pour le crypto de {{saleAmount}} XOF. Je libérerai le crypto immédiatement après confirmation du paiement. Merci pour votre confiance. {{emoji}}",
+          "Bonjour. Veuillez procéder au paiement de {{totalAmount}} XOF (incluant mes frais de 1%) pour le crypto de {{saleAmount}} XOF. J'effectuerai la libération sans délai après vérification du paiement. {{emoji}}",
+          "Cher client, veuillez envoyer {{totalAmount}} XOF (1% de frais inclus) pour le crypto de {{saleAmount}} XOF. Je vous assure un traitement rapide et une libération immédiate après confirmation du paiement. {{emoji}}"
+        ]
+      },
+      urgent: {
+        en: [
+          "URGENT: Please send {{totalAmount}} XOF (including my 1% fee) for the {{saleAmount}} XOF crypto IMMEDIATELY. I need to complete this trade quickly. Will release instantly upon payment. Time is of the essence! {{emoji}}",
+          "ASAP: Need you to send {{totalAmount}} XOF with my 1% fee for {{saleAmount}} XOF crypto RIGHT NOW. This is time-sensitive. I'll release immediately when payment comes through. Please hurry! {{emoji}}",
+          "TIME-SENSITIVE: Must have {{totalAmount}} XOF (1% fee included) for {{saleAmount}} XOF crypto URGENTLY. Will release crypto the moment payment is confirmed. Please act fast! {{emoji}}",
+          "EMERGENCY: Require {{totalAmount}} XOF (including 1% fee) for {{saleAmount}} XOF crypto IMMEDIATELY. Will release without delay upon payment. This cannot wait! {{emoji}}",
+          "CRITICAL: Need {{totalAmount}} XOF (1% fee included) for {{saleAmount}} XOF crypto URGENTLY. Will release instantly when payment is verified. Please respond quickly! {{emoji}}"
+        ],
+        fr: [
+          "URGENT : Veuillez envoyer {{totalAmount}} XOF (incluant mes frais de 1%) pour le crypto de {{saleAmount}} XOF IMMÉDIATEMENT. Je dois compléter cette transaction rapidement. Je libérerai instantanément après paiement. Le temps est compté ! {{emoji}}",
+          "ASAP : Besoin que vous envoyiez {{totalAmount}} XOF avec mes frais de 1% pour {{saleAmount}} XOF crypto MAINTENANT. C'est urgent. Je libérerai immédiatement après réception du paiement. Dépêchez-vous ! {{emoji}}",
+          "URGENT : Dois recevoir {{totalAmount}} XOF (frais de 1% inclus) pour {{saleAmount}} XOF crypto DÈS QUE POSSIBLE. Je libérerai le crypto dès confirmation du paiement. Agissez vite ! {{emoji}}",
+          "URGENCE : Requiert {{totalAmount}} XOF (incluant 1% de frais) pour {{saleAmount}} XOF crypto IMMÉDIATEMENT. Je libérerai sans délai après paiement. Cela ne peut pas attendre ! {{emoji}}",
+          "CRITIQUE : Besoin de {{totalAmount}} XOF (frais de 1% inclus) pour {{saleAmount}} XOF crypto URGENCE. Je libérerai instantanément après vérification du paiement. Répondez vite ! {{emoji}}"
+        ]
+      },
+      casual: {
+        en: [
+          "Hey! Could you send {{totalAmount}} XOF (that's with my 1% fee) for the {{saleAmount}} XOF crypto? I'll release it right away once payment comes through. Let me know when you've sent it! {{emoji}}",
+          "What's up? Ready to trade? Just need you to send {{totalAmount}} XOF (includes my 1% fee) for the {{saleAmount}} XOF crypto. I'll release as soon as I see the payment. Cool? {{emoji}}",
+          "Hi there! Would you mind sending {{totalAmount}} XOF (with my 1% fee) for the {{saleAmount}} XOF crypto? I'll get it released to you the moment payment shows up. Sound good? {{emoji}}",
+          "Yo! Let's do this trade - just send {{totalAmount}} XOF (my 1% fee included) for the {{saleAmount}} XOF crypto and I'll release immediately. Easy peasy! {{emoji}}",
+          "Hey buddy! Could you transfer {{totalAmount}} XOF (that's with my 1% fee) for the {{saleAmount}} XOF crypto? I'll release it the second payment comes in. Thanks! {{emoji}}"
+        ],
+        fr: [
+          "Salut ! Pourrais-tu envoyer {{totalAmount}} XOF (avec mes frais de 1%) pour le crypto de {{saleAmount}} XOF ? Je le libérerai dès que le paiement arrivera. Dis-moi quand tu l'as envoyé ! {{emoji}}",
+          "Ça va ? Prêt à échanger ? J'ai juste besoin que tu envoies {{totalAmount}} XOF (incluant mes frais de 1%) pour le crypto de {{saleAmount}} XOF. Je libérerai dès que je verrai le paiement. D'accord ? {{emoji}}",
+          "Bonjour ! Pourriez-vous envoyer {{totalAmount}} XOF (avec mes frais de 1%) pour le crypto de {{saleAmount}} XOF ? Je le libérerai dès réception du paiement. Ça vous va ? {{emoji}}",
+          "Yo ! Faisons cet échange - envoie juste {{totalAmount}} XOF (mes frais de 1% inclus) pour le crypto de {{saleAmount}} XOF et je libérerai immédiatement. Facile ! {{emoji}}",
+          "Salut mon pote ! Pourrais-tu transférer {{totalAmount}} XOF (c'est avec mes frais de 1%) pour le crypto de {{saleAmount}} XOF ? Je le libérerai dès réception du paiement. Merci ! {{emoji}}"
+        ]
+      },
+      confident: {
+        en: [
+          "Please send {{totalAmount}} XOF (including my 1% fee) for the {{saleAmount}} XOF crypto. I have a perfect track record of instant releases - check my feedback. Let's make this happen! {{emoji}}",
+          "Transfer {{totalAmount}} XOF (with my 1% fee) for the {{saleAmount}} XOF crypto and consider it done. I release faster than anyone - my reviews don't lie. Ready when you are! {{emoji}}",
+          "I need you to send {{totalAmount}} XOF (1% fee included) for the {{saleAmount}} XOF crypto. With 100% positive feedback, you can trust me for immediate release. Let's trade! {{emoji}}",
+          "Send {{totalAmount}} XOF (including my 1% fee) for the {{saleAmount}} XOF crypto and watch how fast I release. My reputation speaks for itself. Looking forward to doing business! {{emoji}}",
+          "Let's be clear - send {{totalAmount}} XOF (with my 1% fee) for the {{saleAmount}} XOF crypto and I'll release instantly. I don't play games - check my perfect feedback. Deal? {{emoji}}"
+        ],
+        fr: [
+          "Veuillez envoyer {{totalAmount}} XOF (incluant mes frais de 1%) pour le crypto de {{saleAmount}} XOF. J'ai un historique parfait de libérations instantanées - voyez mes feedbacks. Faisons cela ! {{emoji}}",
+          "Transférez {{totalAmount}} XOF (avec mes frais de 1%) pour le crypto de {{saleAmount}} XOF et considérez que c'est fait. Je libère plus vite que quiconque - mes avis ne mentent pas. Prêt quand vous voulez ! {{emoji}}",
+          "J'ai besoin que vous envoyiez {{totalAmount}} XOF (frais de 1% inclus) pour le crypto de {{saleAmount}} XOF. Avec 100% de feedback positif, vous pouvez me faire confiance pour une libération immédiate. Échangeons ! {{emoji}}",
+          "Envoyez {{totalAmount}} XOF (incluant mes frais de 1%) pour le crypto de {{saleAmount}} XOF et voyez à quelle vitesse je libère. Ma réputation parle d'elle-même. Dans l'attente de faire affaire ! {{emoji}}",
+          "Soyons clairs - envoyez {{totalAmount}} XOF (avec mes frais de 1%) pour le crypto de {{saleAmount}} XOF et je libérerai instantanément. Je ne joue pas - voyez mes feedbacks parfaits. Marché conclu ? {{emoji}}"
+        ]
+      },
+      appreciative: {
+        en: [
+          "I'd really appreciate it if you could send {{totalAmount}} XOF (including my 1% fee) for the {{saleAmount}} XOF crypto. I'll release immediately and would be so grateful for your business. Thank you! {{emoji}}",
+          "Many thanks in advance for sending {{totalAmount}} XOF (with my 1% fee) for the {{saleAmount}} XOF crypto. I promise quick release and truly value your trust in me. Much appreciated! {{emoji}}",
+          "Thank you for choosing to trade! Please send {{totalAmount}} XOF (1% fee included) for the {{saleAmount}} XOF crypto. I'll release right away and am deeply grateful for your patronage. {{emoji}}",
+          "I'm so thankful you're considering this trade. Could you please send {{totalAmount}} XOF (including my 1% fee) for the {{saleAmount}} XOF crypto? I'll release instantly and be very appreciative. {{emoji}}",
+          "Heartfelt thanks for your interest! Please transfer {{totalAmount}} XOF (with my 1% fee) for the {{saleAmount}} XOF crypto. I'll release immediately and be forever grateful for your trust. {{emoji}}"
+        ],
+        fr: [
+          "Je vous serais vraiment reconnaissant si vous pouviez envoyer {{totalAmount}} XOF (incluant mes frais de 1%) pour le crypto de {{saleAmount}} XOF. Je libérerai immédiatement et serais très reconnaissant pour votre confiance. Merci ! {{emoji}}",
+          "Merci d'avance d'envoyer {{totalAmount}} XOF (avec mes frais de 1%) pour le crypto de {{saleAmount}} XOF. Je promets une libération rapide et apprécie vraiment votre confiance. Grand merci ! {{emoji}}",
+          "Merci d'avoir choisi d'échanger ! Veuillez envoyer {{totalAmount}} XOF (frais de 1% inclus) pour le crypto de {{saleAmount}} XOF. Je libérerai immédiatement et suis profondément reconnaissant pour votre patronage. {{emoji}}",
+          "Je suis tellement reconnaissant que vous considériez cet échange. Pourriez-vous envoyer {{totalAmount}} XOF (incluant mes frais de 1%) pour le crypto de {{saleAmount}} XOF ? Je libérerai instantanément et serais très reconnaissant. {{emoji}}",
+          "Un grand merci pour votre intérêt ! Veuillez transférer {{totalAmount}} XOF (avec mes frais de 1%) pour le crypto de {{saleAmount}} XOF. Je libérerai immédiatement et serai éternellement reconnaissant pour votre confiance. {{emoji}}"
+        ]
+      }
+    };
+
+    const thankYouTemplates = {
+      friendly: {
+        en: [
+          "Thanks for the smooth trade for {{saleAmount}} XOF! Let's trade again soon. {{emoji}}",
+          "Awesome doing business with you for {{saleAmount}} XOF! {{emoji}}",
+          "Great trade for {{saleAmount}} XOF! You rock! {{emoji}}",
+          "Perfect transaction for {{saleAmount}} XOF! Until next time! {{emoji}}",
+          "Super smooth trade for {{saleAmount}} XOF! You're the best! {{emoji}}"
+        ],
+        fr: [
+          "Merci pour l'échange fluide pour {{saleAmount}} XOF ! À bientôt. {{emoji}}",
+          "Super transaction pour {{saleAmount}} XOF avec vous ! {{emoji}}",
+          "Excellent échange pour {{saleAmount}} XOF ! Vous êtes génial ! {{emoji}}",
+          "Transaction parfaite pour {{saleAmount}} XOF ! À la prochaine ! {{emoji}}",
+          "Échange super fluide pour {{saleAmount}} XOF ! Vous êtes le meilleur ! {{emoji}}"
+        ]
+      },
+      professional: {
+        en: [
+          "Thank you for your business regarding the {{saleAmount}} XOF transaction. It was a pleasure dealing with you. {{emoji}}",
+          "We appreciate your trust in our service for the {{saleAmount}} XOF trade. Looking forward to future transactions. {{emoji}}",
+          "Acknowledgement of successful completion of the {{saleAmount}} XOF transaction. Thank you for choosing us. {{emoji}}",
+          "We confirm the successful execution of the {{saleAmount}} XOF trade. Thank you for your cooperation. {{emoji}}",
+          "Gratitude for your prompt processing of the {{saleAmount}} XOF transaction. We value your partnership. {{emoji}}"
+        ],
+        fr: [
+          "Merci pour votre confiance concernant la transaction de {{saleAmount}} XOF. Ce fut un plaisir de traiter avec vous. {{emoji}}",
+          "Nous apprécions votre confiance dans notre service pour l'échange de {{saleAmount}} XOF. Dans l'attente de futures transactions. {{emoji}}",
+          "Accusé de réception de la réussite de la transaction de {{saleAmount}} XOF. Merci de nous avoir choisis. {{emoji}}",
+          "Nous confirmons l'exécution réussie de l'échange de {{saleAmount}} XOF. Merci pour votre coopération. {{emoji}}",
+          "Reconnaissance pour votre traitement rapide de la transaction de {{saleAmount}} XOF. Nous valorisons votre partenariat. {{emoji}}"
+        ]
+      },
+      grateful: {
+        en: [
+          "I'm so grateful for your trust in trading {{saleAmount}} XOF with me. Thank you from the bottom of my heart! {{emoji}}",
+          "From the depths of my heart, thank you for the {{saleAmount}} XOF trade. Your trust means everything to me. {{emoji}}",
+          "Words can't express how thankful I am for the {{saleAmount}} XOF transaction. You're amazing! {{emoji}}",
+          "My deepest gratitude for choosing me for the {{saleAmount}} XOF trade. I'm truly honored. {{emoji}}",
+          "Thank you, thank you, thank you for the {{saleAmount}} XOF trade! You've made my day! {{emoji}}"
+        ],
+        fr: [
+          "Je suis si reconnaissant pour votre confiance en échangeant {{saleAmount}} XOF avec moi. Merci du fond du cœur ! {{emoji}}",
+          "Du plus profond de mon cœur, merci pour l'échange de {{saleAmount}} XOF. Votre confiance signifie tout pour moi. {{emoji}}",
+          "Les mots ne peuvent exprimer à quel point je suis reconnaissant pour la transaction de {{saleAmount}} XOF. Vous êtes incroyable ! {{emoji}}",
+          "Ma plus profonde gratitude pour m'avoir choisi pour l'échange de {{saleAmount}} XOF. Je suis vraiment honoré. {{emoji}}",
+          "Merci, merci, merci pour l'échange de {{saleAmount}} XOF ! Vous avez fait ma journée ! {{emoji}}"
+        ]
+      },
+      warm: {
+        en: [
+          "Warmest thanks for the lovely {{saleAmount}} XOF trade! You're wonderful to deal with. {{emoji}}",
+          "Heartfelt thanks for the {{saleAmount}} XOF transaction! It's always a pleasure. {{emoji}}",
+          "So lovely trading {{saleAmount}} XOF with you! Warmest regards and thanks. {{emoji}}",
+          "With warm appreciation for the {{saleAmount}} XOF trade. You're a delight! {{emoji}}",
+          "A big warm thank you for the {{saleAmount}} XOF transaction! You're awesome! {{emoji}}"
+        ],
+        fr: [
+          "Les plus chaleureux remerciements pour le bel échange de {{saleAmount}} XOF ! Vous êtes merveilleux. {{emoji}}",
+          "Remerciements sincères pour la transaction de {{saleAmount}} XOF ! C'est toujours un plaisir. {{emoji}}",
+          "Si agréable d'échanger {{saleAmount}} XOF avec vous ! Salutations chaleureuses et merci. {{emoji}}",
+          "Avec une chaleureuse reconnaissance pour l'échange de {{saleAmount}} XOF. Vous êtes un plaisir ! {{emoji}}",
+          "Un grand merci chaleureux pour la transaction de {{saleAmount}} XOF ! Vous êtes génial ! {{emoji}}"
+        ]
+      },
+      formal: {
+        en: [
+          "We extend our sincere gratitude for your {{saleAmount}} XOF transaction. Your business is highly valued. {{emoji}}",
+          "Please accept our formal thanks for the {{saleAmount}} XOF trade. We appreciate your trust. {{emoji}}",
+          "We acknowledge with gratitude the successful completion of the {{saleAmount}} XOF transaction. {{emoji}}",
+          "Our sincere appreciation for your patronage regarding the {{saleAmount}} XOF trade. {{emoji}}",
+          "Formal recognition of your valued {{saleAmount}} XOF transaction. Thank you. {{emoji}}"
+        ],
+        fr: [
+          "Nous vous exprimons notre sincère gratitude pour votre transaction de {{saleAmount}} XOF. Votre confiance est très appréciée. {{emoji}}",
+          "Veuillez accepter nos remerciements formels pour l'échange de {{saleAmount}} XOF. Nous apprécions votre confiance. {{emoji}}",
+          "Nous reconnaissons avec gratitude la réussite de la transaction de {{saleAmount}} XOF. {{emoji}}",
+          "Notre sincère appréciation pour votre patronage concernant l'échange de {{saleAmount}} XOF. {{emoji}}",
+          "Reconnaissance formelle de votre précieuse transaction de {{saleAmount}} XOF. Merci. {{emoji}}"
+        ]
+      },
+      cheerful: {
+        en: [
+          "Woohoo! Awesome crypto trade for {{saleAmount}} XOF! Thanks for being great. Let's do it again! {{emoji}}",
+          "Yay! Perfect {{saleAmount}} XOF trade completed! You're fantastic! {{emoji}}",
+          "High five! Nailed the {{saleAmount}} XOF trade! You're amazing! {{emoji}}",
+          "Fantastic! {{saleAmount}} XOF trade success! Couldn't be happier! {{emoji}}",
+          "Cheers to us! Great {{saleAmount}} XOF trade! You rock! {{emoji}}"
+        ],
+        fr: [
+          "Youhou ! Super échange crypto pour {{saleAmount}} XOF ! Merci d'être génial. Recommençons ! {{emoji}}",
+          "Ouais ! Transaction parfaite de {{saleAmount}} XOF terminée ! Vous êtes fantastique ! {{emoji}}",
+          "Top là ! Réussi l'échange de {{saleAmount}} XOF ! Vous êtes incroyable ! {{emoji}}",
+          "Fantastique ! Succès de l'échange de {{saleAmount}} XOF ! Je ne pourrais être plus heureux ! {{emoji}}",
+          "Santé à nous ! Super échange de {{saleAmount}} XOF ! Vous êtes génial ! {{emoji}}"
+        ]
+      },
+      sincere: {
+        en: [
+          "I genuinely appreciate your trust in trading {{saleAmount}} XOF with me. Thank you sincerely. {{emoji}}",
+          "My sincere thanks for the {{saleAmount}} XOF transaction. Your trust means a lot. {{emoji}}",
+          "Heartfelt appreciation for the {{saleAmount}} XOF trade. You're a valued partner. {{emoji}}",
+          "With deepest sincerity, thank you for the {{saleAmount}} XOF transaction. {{emoji}}",
+          "I truly value your business regarding the {{saleAmount}} XOF trade. Many thanks. {{emoji}}"
+        ],
+        fr: [
+          "J'apprécie sincèrement votre confiance en échangeant {{saleAmount}} XOF avec moi. Merci sincèrement. {{emoji}}",
+          "Mes remerciements sincères pour la transaction de {{saleAmount}} XOF. Votre confiance compte beaucoup. {{emoji}}",
+          "Appréciation sincère pour l'échange de {{saleAmount}} XOF. Vous êtes un partenaire précieux. {{emoji}}",
+          "Avec la plus profonde sincérité, merci pour la transaction de {{saleAmount}} XOF. {{emoji}}",
+          "Je valorise vraiment votre confiance concernant l'échange de {{saleAmount}} XOF. Mille mercis. {{emoji}}"
+        ]
+      },
+      inviting: {
+        en: [
+          "Thanks for the great {{saleAmount}} XOF trade! Let's do this again soon - I'd love that! {{emoji}}",
+          "Appreciation for your {{saleAmount}} XOF transaction! Looking forward to our next deal. {{emoji}}",
+          "Grateful for the {{saleAmount}} XOF trade! I'd be delighted to trade with you again. {{emoji}}",
+          "Thank you for the {{saleAmount}} XOF transaction! Hope to see you again for more trades. {{emoji}}",
+          "Many thanks for the {{saleAmount}} XOF trade! You're always welcome to trade with me. {{emoji}}"
+        ],
+        fr: [
+          "Merci pour le super échange de {{saleAmount}} XOF ! Recommençons bientôt - j'adorerais ! {{emoji}}",
+          "Reconnaissance pour votre transaction de {{saleAmount}} XOF ! Dans l'attente de notre prochain échange. {{emoji}}",
+          "Reconnaissant pour l'échange de {{saleAmount}} XOF ! Je serais ravi d'échanger à nouveau avec vous. {{emoji}}",
+          "Merci pour la transaction de {{saleAmount}} XOF ! Au plaisir de vous revoir pour d'autres échanges. {{emoji}}",
+          "Mille mercis pour l'échange de {{saleAmount}} XOF ! Vous êtes toujours le bienvenu pour échanger avec moi. {{emoji}}"
+        ]
+      }
+    };
+
+    const problemTemplates = {
+      payment: {
+        en: [
+          "There seems to be an issue with the payment for {{problemAmount}} XOF crypto. Could you confirm? {{emoji}}",
+          "Payment for {{problemAmount}} XOF crypto appears incomplete. Please verify. {{emoji}}",
+          "I haven't received the payment for {{problemAmount}} XOF crypto yet. Can you check? {{emoji}}",
+          "The payment for our {{problemAmount}} XOF crypto trade seems delayed. Please advise. {{emoji}}",
+          "Payment confirmation for {{problemAmount}} XOF crypto hasn't come through. Could there be an issue? {{emoji}}"
+        ],
+        fr: [
+          "Il semble y avoir un problème avec le paiement pour {{problemAmount}} XOF crypto. Pouvez-vous confirmer ? {{emoji}}",
+          "Le paiement pour {{problemAmount}} XOF crypto semble incomplet. Veuillez vérifier. {{emoji}}",
+          "Je n'ai pas encore reçu le paiement pour {{problemAmount}} XOF crypto. Pouvez-vous vérifier ? {{emoji}}",
+          "Le paiement pour notre échange de {{problemAmount}} XOF crypto semble retardé. Veuillez conseiller. {{emoji}}",
+          "La confirmation de paiement pour {{problemAmount}} XOF crypto n'est pas arrivée. Y aurait-il un problème ? {{emoji}}"
+        ]
+      },
+      release: {
+        en: [
+          "The crypto release for our {{problemAmount}} XOF trade seems delayed. Is everything okay? {{emoji}}",
+          "I haven't received the crypto for our {{problemAmount}} XOF transaction yet. Please update. {{emoji}}",
+          "Crypto release for {{problemAmount}} XOF appears to be pending. Could you check? {{emoji}}",
+          "Our {{problemAmount}} XOF crypto trade hasn't been released yet. Is there a problem? {{emoji}}",
+          "Still waiting for the crypto release for {{problemAmount}} XOF. Can you confirm status? {{emoji}}"
+        ],
+        fr: [
+          "La libération du crypto pour notre échange de {{problemAmount}} XOF semble retardée. Tout va bien ? {{emoji}}",
+          "Je n'ai pas encore reçu le crypto pour notre transaction de {{problemAmount}} XOF. Veuillez mettre à jour. {{emoji}}",
+          "La libération du crypto pour {{problemAmount}} XOF semble en attente. Pouvez-vous vérifier ? {{emoji}}",
+          "Notre échange de {{problemAmount}} XOF crypto n'a pas encore été libéré. Y a-t-il un problème ? {{emoji}}",
+          "J'attends toujours la libération du crypto pour {{problemAmount}} XOF. Pouvez-vous confirmer le statut ? {{emoji}}"
+        ]
+      },
+      amount: {
+        en: [
+          "There appears to be a discrepancy in the amount for our {{problemAmount}} XOF trade. Can we clarify? {{emoji}}",
+          "The amount received for the {{problemAmount}} XOF crypto doesn't match. Please verify. {{emoji}}",
+          "I think there might be an error in the amount for our {{problemAmount}} XOF transaction. {{emoji}}",
+          "We seem to have an amount mismatch for the {{problemAmount}} XOF crypto trade. {{emoji}}",
+          "The figures don't add up for our {{problemAmount}} XOF transaction. Could we check? {{emoji}}"
+        ],
+        fr: [
+          "Il semble y avoir une divergence dans le montant pour notre échange de {{problemAmount}} XOF. Pouvons-nous clarifier ? {{emoji}}",
+          "Le montant reçu pour le crypto de {{problemAmount}} XOF ne correspond pas. Veuillez vérifier. {{emoji}}",
+          "Je pense qu'il pourrait y avoir une erreur dans le montant pour notre transaction de {{problemAmount}} XOF. {{emoji}}",
+          "Nous semblons avoir un montant qui ne correspond pas pour l'échange de {{problemAmount}} XOF crypto. {{emoji}}",
+          "Les chiffres ne correspondent pas pour notre transaction de {{problemAmount}} XOF. Pouvons-nous vérifier ? {{emoji}}"
+        ]
+      },
+      trust: {
+        en: [
+          "I'm concerned about our {{problemAmount}} XOF trade. Can we establish trust before proceeding? {{emoji}}",
+          "For our {{problemAmount}} XOF transaction, I'd like some reassurance before continuing. {{emoji}}",
+          "Regarding the {{problemAmount}} XOF crypto, I have some trust concerns to address. {{emoji}}",
+          "Before we proceed with {{problemAmount}} XOF, could we build some trust? {{emoji}}",
+          "I'd feel more comfortable with our {{problemAmount}} XOF trade if we could establish trust. {{emoji}}"
+        ],
+        fr: [
+          "Je suis préoccupé par notre échange de {{problemAmount}} XOF. Pouvons-nous établir la confiance avant de continuer ? {{emoji}}",
+          "Pour notre transaction de {{problemAmount}} XOF, j'aimerais quelques assurances avant de continuer. {{emoji}}",
+          "Concernant le crypto de {{problemAmount}} XOF, j'ai quelques inquiétudes de confiance à aborder. {{emoji}}",
+          "Avant de continuer avec {{problemAmount}} XOF, pourrions-nous établir la confiance ? {{emoji}}",
+          "Je me sentirais plus à l'aise avec notre échange de {{problemAmount}} XOF si nous pouvions établir la confiance. {{emoji}}"
+        ]
+      },
+      communication: {
+        en: [
+          "Communication seems to have broken down for our {{problemAmount}} XOF trade. Can we reconnect? {{emoji}}",
+          "We seem to have a communication gap regarding the {{problemAmount}} XOF transaction. {{emoji}}",
+          "I'm having trouble reaching you about our {{problemAmount}} XOF crypto trade. {{emoji}}",
+          "There appears to be a communication issue for our {{problemAmount}} XOF trade. {{emoji}}",
+          "Let's improve our communication for the {{problemAmount}} XOF transaction. {{emoji}}"
+        ],
+        fr: [
+          "La communication semble rompue pour notre échange de {{problemAmount}} XOF. Pouvons-nous nous reconnecter ? {{emoji}}",
+          "Nous semblons avoir un écart de communication concernant la transaction de {{problemAmount}} XOF. {{emoji}}",
+          "J'ai du mal à vous joindre concernant notre échange de {{problemAmount}} XOF crypto. {{emoji}}",
+          "Il semble y avoir un problème de communication pour notre échange de {{problemAmount}} XOF. {{emoji}}",
+          "Améliorons notre communication pour la transaction de {{problemAmount}} XOF. {{emoji}}"
+        ]
+      }
+    };
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      initSettings();
+      setupTabNavigation();
+      loadCustomTemplates();
+      loadHistory();
+    });
+
+    function initSettings() {
+      document.getElementById('saveHistory').checked = settings.saveHistory;
+      document.getElementById('darkMode').checked = settings.darkMode;
+      document.getElementById('autoCopy').checked = settings.autoCopy;
+      document.getElementById('showEnglish').checked = settings.showEnglish;
+      document.getElementById('defaultCategory').value = settings.defaultCategory;
+      document.getElementById('category').value = settings.defaultCategory;
+      
+      if (settings.darkMode) {
+        document.body.classList.add('dark-mode');
+      }
+      updateEnglishDisplay();
+    }
+
+    function setupTabNavigation() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const tabId = this.getAttribute('data-tab');
+          openTab(tabId);
+        });
+      });
+    }
+
+    function openTab(tabId) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Deactivate all buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Show the selected tab and activate its button
+      document.getElementById(tabId).classList.add('active');
+      document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+
+      // Load content for specific tabs
+      if (tabId === 'historyTab') {
+        loadHistory();
+      } else if (tabId === 'customTab') {
+        loadCustomTemplates();
+      }
+    }
+
+    function addEmoji(emoji) {
+      selectedEmoji = emoji;
+    }
+
+    function addThanksEmoji(emoji) {
+      selectedThanksEmoji = emoji;
+    }
+
+    function generateMessages() {
+      const saleAmount = parseFloat(document.getElementById('saleAmount').value);
+      const selectedCategory = document.getElementById('category').value;
+
+      if (!saleAmount || saleAmount <= 0) {
+        alert('Please enter a valid positive sale amount.');
+        return;
+      }
+
+      const totalAmount = saleAmount + (saleAmount * 0.01);
+      const categories = selectedCategory === 'all' ? Object.keys(messageTemplates) : [selectedCategory];
+      let allMessages = [];
+
+      categories.forEach(category => {
+        if (messageTemplates[category]) {
+          messageTemplates[category].en.forEach((msg, index) => {
+            allMessages.push({
+              en: msg,
+              fr: messageTemplates[category].fr[index],
+              category: category
+            });
+          });
+        }
+      });
+
+      if (allMessages.length === 0) {
+        alert('No messages found for the selected category.');
+        return;
+      }
+
+      const randomMessage = allMessages[Math.floor(Math.random() * allMessages.length)];
+      const finalEnglishMessage = randomMessage.en
+        .replace(/{{saleAmount}}/g, saleAmount.toFixed(2))
+        .replace(/{{totalAmount}}/g, totalAmount.toFixed(2))
+        .replace(/{{emoji}}/g, selectedEmoji);
+      const finalFrenchMessage = randomMessage.fr
+        .replace(/{{saleAmount}}/g, saleAmount.toFixed(2))
+        .replace(/{{totalAmount}}/g, totalAmount.toFixed(2))
+        .replace(/{{emoji}}/g, selectedEmoji);
+
+      document.getElementById('englishMessage').textContent = finalEnglishMessage;
+      document.getElementById('frenchMessage').textContent = finalFrenchMessage;
+      document.getElementById('messageCategory').textContent = randomMessage.category;
+      document.getElementById('messageContainer').style.display = 'block';
+      document.getElementById('copyBtn').style.display = 'block';
+      document.getElementById('copyEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+
+      if (settings.autoCopy) {
+        copyFrenchMessage();
+      }
+
+      if (settings.saveHistory) {
+        const historyItem = {
+          type: 'sell',
+          english: finalEnglishMessage,
+          french: finalFrenchMessage,
+          category: randomMessage.category,
+          timestamp: new Date().toISOString()
+        };
+        messageHistory.unshift(historyItem);
+        if (messageHistory.length > 100) messageHistory.pop();
+        localStorage.setItem('cryptoSellHistory', JSON.stringify(messageHistory));
+      }
+
+      selectedEmoji = '';
+    }
+
+    function generateThankYouMessages() {
+      const thanksAmount = parseFloat(document.getElementById('thanksAmount').value) || '';
+      const selectedCategory = document.getElementById('thanksCategory').value;
+
+      const categories = selectedCategory === 'all' ? Object.keys(thankYouTemplates) : [selectedCategory];
+      let allMessages = [];
+
+      categories.forEach(category => {
+        if (thankYouTemplates[category]) {
+          thankYouTemplates[category].en.forEach((msg, index) => {
+            allMessages.push({
+              en: msg,
+              fr: thankYouTemplates[category].fr[index],
+              category: category
+            });
+          });
+        }
+      });
+
+      if (allMessages.length === 0) {
+        alert('No messages found for the selected category.');
+        return;
+      }
+
+      const randomMessage = allMessages[Math.floor(Math.random() * allMessages.length)];
+      const finalEnglishMessage = randomMessage.en
+        .replace(/{{saleAmount}}/g, thanksAmount ? thanksAmount.toFixed(2) : 'the crypto')
+        .replace(/{{emoji}}/g, selectedThanksEmoji);
+      const finalFrenchMessage = randomMessage.fr
+        .replace(/{{saleAmount}}/g, thanksAmount ? thanksAmount.toFixed(2) : 'le crypto')
+        .replace(/{{emoji}}/g, selectedThanksEmoji);
+
+      document.getElementById('englishThanksMessage').textContent = finalEnglishMessage;
+      document.getElementById('frenchThanksMessage').textContent = finalFrenchMessage;
+      document.getElementById('thanksMessageCategory').textContent = randomMessage.category;
+      document.getElementById('thanksMessageContainer').style.display = 'block';
+      document.getElementById('copyThanksBtn').style.display = 'block';
+      document.getElementById('copyThanksEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+
+      if (settings.autoCopy) {
+        copyFrenchThanksMessage();
+      }
+
+      if (settings.saveHistory) {
+        const historyItem = {
+          type: 'thanks',
+          english: finalEnglishMessage,
+          french: finalFrenchMessage,
+          category: randomMessage.category,
+          timestamp: new Date().toISOString()
+        };
+        messageHistory.unshift(historyItem);
+        if (messageHistory.length > 100) messageHistory.pop();
+        localStorage.setItem('cryptoSellHistory', JSON.stringify(messageHistory));
+      }
+
+      selectedThanksEmoji = '';
+    }
+
+    function generateProblemMessages() {
+      const problemAmount = parseFloat(document.getElementById('problemAmount').value) || '';
+      const problemType = document.getElementById('problemType').value;
+      const problemSeverity = document.getElementById('problemSeverity').value;
+      const problemDetails = document.getElementById('problemDetails').value;
+
+      const types = problemType === 'all' ? Object.keys(problemTemplates) : [problemType];
+      let allMessages = [];
+
+      types.forEach(type => {
+        if (problemTemplates[type]) {
+          problemTemplates[type].en.forEach((msg, index) => {
+            allMessages.push({
+              en: msg,
+              fr: problemTemplates[type].fr[index],
+              category: type
+            });
+          });
+        }
+      });
+
+      if (allMessages.length === 0) {
+        alert('No messages found for the selected problem type.');
+        return;
+      }
+
+      const randomMessage = allMessages[Math.floor(Math.random() * allMessages.length)];
+      let finalEnglishMessage = randomMessage.en
+        .replace(/{{problemAmount}}/g, problemAmount ? problemAmount.toFixed(2) : 'the crypto')
+        .replace(/{{emoji}}/g, selectedEmoji);
+      let finalFrenchMessage = randomMessage.fr
+        .replace(/{{problemAmount}}/g, problemAmount ? problemAmount.toFixed(2) : 'le crypto')
+        .replace(/{{emoji}}/g, selectedEmoji);
+
+      if (problemSeverity === 'urgent') {
+        finalEnglishMessage = 'URGENT: ' + finalEnglishMessage;
+        finalFrenchMessage = 'URGENT : ' + finalFrenchMessage;
+      } else if (problemSeverity === 'serious') {
+        finalEnglishMessage = 'IMPORTANT: ' + finalEnglishMessage;
+        finalFrenchMessage = 'IMPORTANT : ' + finalFrenchMessage;
+      }
+
+      if (problemDetails) {
+        finalEnglishMessage += '\n\nDetails: ' + problemDetails;
+        finalFrenchMessage += '\n\nDétails : ' + problemDetails;
+      }
+
+      document.getElementById('englishProblemMessage').textContent = finalEnglishMessage;
+      document.getElementById('frenchProblemMessage').textContent = finalFrenchMessage;
+      document.getElementById('problemMessageCategory').textContent = randomMessage.category;
+      document.getElementById('problemMessageContainer').style.display = 'block';
+      document.getElementById('copyProblemBtn').style.display = 'block';
+      document.getElementById('copyProblemEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+
+      if (settings.autoCopy) {
+        copyFrenchProblemMessage();
+      }
+
+      if (settings.saveHistory) {
+        const historyItem = {
+          type: 'problem',
+          english: finalEnglishMessage,
+          french: finalFrenchMessage,
+          category: randomMessage.category,
+          severity: problemSeverity,
+          timestamp: new Date().toISOString()
+        };
+        messageHistory.unshift(historyItem);
+        if (messageHistory.length > 100) messageHistory.pop();
+        localStorage.setItem('cryptoSellHistory', JSON.stringify(messageHistory));
+      }
+
+      selectedEmoji = '';
+    }
+
+    function copyFrenchMessage() {
+      const text = document.getElementById('frenchMessage').textContent;
+      copyToClipboard(text);
+    }
+
+    function copyEnglishMessage() {
+      const text = document.getElementById('englishMessage').textContent;
+      copyToClipboard(text);
+    }
+
+    function copyFrenchThanksMessage() {
+      const text = document.getElementById('frenchThanksMessage').textContent;
+      copyToClipboard(text);
+    }
+
+    function copyEnglishThanksMessage() {
+      const text = document.getElementById('englishThanksMessage').textContent;
+      copyToClipboard(text);
+    }
+
+    function copyFrenchProblemMessage() {
+      const text = document.getElementById('frenchProblemMessage').textContent;
+      copyToClipboard(text);
+    }
+
+    function copyEnglishProblemMessage() {
+      const text = document.getElementById('englishProblemMessage').textContent;
+      copyToClipboard(text);
+    }
+
+    function copyToClipboard(text) {
+      if (!text) {
+        alert('No message to copy. Please generate a message first.');
+        return;
+      }
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+          .then(() => showNotification('Message copied successfully! ✓'))
+          .catch(err => {
+            console.error('Clipboard API failed:', err);
+            fallbackCopy(text);
+          });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showNotification('Message copied successfully! ✓');
+      } catch (err) {
+        console.error('Fallback copy failed:', err);
+        alert('Copy failed. Please select and copy manually.');
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function showNotification(message) {
+      const notification = document.getElementById('copyNotification');
+      notification.textContent = message;
+      notification.style.display = 'block';
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 2000);
+    }
+
+    function saveSettings() {
+      settings.saveHistory = document.getElementById('saveHistory').checked;
+      settings.darkMode = document.getElementById('darkMode').checked;
+      settings.autoCopy = document.getElementById('autoCopy').checked;
+      settings.showEnglish = document.getElementById('showEnglish').checked;
+      settings.defaultCategory = document.getElementById('defaultCategory').value;
+      localStorage.setItem('cryptoSellSettings', JSON.stringify(settings));
+      document.body.classList.toggle('dark-mode', settings.darkMode);
+      document.getElementById('category').value = settings.defaultCategory;
+      updateEnglishDisplay();
+      showNotification('Settings saved successfully!');
+    }
+
+    function resetSettings() {
+      settings = {
+        saveHistory: true,
+        darkMode: false,
+        autoCopy: true,
+        showEnglish: true,
+        defaultCategory: 'polite'
+      };
+      localStorage.setItem('cryptoSellSettings', JSON.stringify(settings));
+      initSettings();
+      document.body.classList.remove('dark-mode');
+      showNotification('Settings reset to defaults!');
+    }
+
+    function updateEnglishDisplay() {
+      const englishMessages = document.querySelectorAll('.english-message');
+      englishMessages.forEach(msg => {
+        msg.style.display = settings.showEnglish ? 'block' : 'none';
+      });
+      
+      document.querySelectorAll('#copyEngBtn, #copyThanksEngBtn, #copyProblemEngBtn').forEach(btn => {
+        btn.style.display = settings.showEnglish ? 'block' : 'none';
+      });
+    }
+
+    function saveTemplate() {
+      const englishMessage = document.getElementById('englishMessage').textContent;
+      const frenchMessage = document.getElementById('frenchMessage').textContent;
+      if (!englishMessage || !frenchMessage) {
+        alert('Please generate messages first.');
+        return;
+      }
+      const templateName = prompt('Enter template name:');
+      if (templateName) {
+        customTemplates.push({
+          name: templateName,
+          english: englishMessage,
+          french: frenchMessage,
+          category: 'sell',
+          timestamp: new Date().toISOString()
+        });
+        localStorage.setItem('cryptoSellTemplates', JSON.stringify(customTemplates));
+        showNotification('Template saved successfully!');
+      }
+    }
+
+    function saveThanksTemplate() {
+      const englishMessage = document.getElementById('englishThanksMessage').textContent;
+      const frenchMessage = document.getElementById('frenchThanksMessage').textContent;
+      if (!englishMessage || !frenchMessage) {
+        alert('Please generate messages first.');
+        return;
+      }
+      const templateName = prompt('Enter template name:');
+      if (templateName) {
+        customTemplates.push({
+          name: templateName,
+          english: englishMessage,
+          french: frenchMessage,
+          category: 'thanks',
+          timestamp: new Date().toISOString()
+        });
+        localStorage.setItem('cryptoSellTemplates', JSON.stringify(customTemplates));
+        showNotification('Template saved successfully!');
+      }
+    }
+
+    function saveProblemTemplate() {
+      const englishMessage = document.getElementById('englishProblemMessage').textContent;
+      const frenchMessage = document.getElementById('frenchProblemMessage').textContent;
+      if (!englishMessage || !frenchMessage) {
+        alert('Please generate messages first.');
+        return;
+      }
+      const templateName = prompt('Enter template name:');
+      if (templateName) {
+        customTemplates.push({
+          name: templateName,
+          english: englishMessage,
+          french: frenchMessage,
+          category: 'problem',
+          timestamp: new Date().toISOString()
+        });
+        localStorage.setItem('cryptoSellTemplates', JSON.stringify(customTemplates));
+        showNotification('Template saved successfully!');
+      }
+    }
+
+    function saveCustomTemplate() {
+      const templateName = document.getElementById('customTemplateName').value;
+      const englishTemplate = document.getElementById('customEnglish').value;
+      const frenchTemplate = document.getElementById('customFrench').value;
+      const category = document.getElementById('customCategory').value;
+
+      if (!templateName || !englishTemplate || !frenchTemplate) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      customTemplates.push({
+        name: templateName,
+        english: englishTemplate,
+        french: frenchTemplate,
+        category: category,
+        timestamp: new Date().toISOString()
+      });
+      if (customTemplates.length > 50) customTemplates.shift();
+      localStorage.setItem('cryptoSellTemplates', JSON.stringify(customTemplates));
+
+      document.getElementById('customTemplateName').value = '';
+      document.getElementById('customEnglish').value = '';
+      document.getElementById('customFrench').value = '';
+      showNotification('Custom template saved!');
+      loadCustomTemplates();
+    }
+
+    function loadCustomTemplates() {
+      const container = document.getElementById('customTemplatesContainer');
+      container.innerHTML = '<h3>My Custom Templates</h3>';
+
+      if (customTemplates.length === 0) {
+        container.innerHTML += '<p>No custom templates saved yet.</p>';
+        return;
+      }
+
+      const table = document.createElement('table');
+      table.style.width = '100%';
+      table.style.borderCollapse = 'collapse';
+      table.style.marginTop = '10px';
+
+      const header = table.createTHead();
+      const headerRow = header.insertRow();
+      headerRow.style.backgroundColor = '#3498db';
+      headerRow.style.color = 'white';
+      ['Name', 'Category', 'English Preview', 'French Preview', 'Actions'].forEach(text => {
+        const th = document.createElement('th');
+        th.textContent = text;
+        th.style.padding = '10px';
+        th.style.textAlign = 'left';
+        headerRow.appendChild(th);
+      });
+
+      const body = table.createTBody();
+      customTemplates.forEach((template, index) => {
+        const row = body.insertRow();
+        row.style.borderBottom = '1px solid #ddd';
+
+        const nameCell = row.insertCell();
+        nameCell.textContent = template.name;
+        nameCell.style.padding = '10px';
+
+        const categoryCell = row.insertCell();
+        categoryCell.textContent = template.category;
+        categoryCell.style.padding = '10px';
+
+        const englishCell = row.insertCell();
+        englishCell.textContent = template.english.length > 50 ? template.english.substring(0, 50) + '...' : template.english;
+        englishCell.style.padding = '10px';
+
+        const frenchCell = row.insertCell();
+        frenchCell.textContent = template.french.length > 50 ? template.french.substring(0, 50) + '...' : template.french;
+        frenchCell.style.padding = '10px';
+
+        const actionsCell = row.insertCell();
+        actionsCell.style.padding = '10px';
+
+        const useButton = document.createElement('button');
+        useButton.textContent = 'Use';
+        useButton.style.marginRight = '5px';
+        useButton.style.padding = '5px 10px';
+        useButton.style.fontSize = '12px';
+        useButton.onclick = () => useCustomTemplate(template);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.style.padding = '5px 10px';
+        deleteButton.style.fontSize = '12px';
+        deleteButton.style.backgroundColor = '#e74c3c';
+        deleteButton.onclick = () => deleteCustomTemplate(index);
+
+        actionsCell.appendChild(useButton);
+        actionsCell.appendChild(deleteButton);
+      });
+
+      container.appendChild(table);
+    }
+
+    function useCustomTemplate(template) {
+      if (template.category === 'sell') {
+        document.getElementById('englishMessage').textContent = template.english;
+        document.getElementById('frenchMessage').textContent = template.french;
+        document.getElementById('messageContainer').style.display = 'block';
+        document.getElementById('copyBtn').style.display = 'block';
+        document.getElementById('copyEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+        openTab('sellTab');
+      } else if (template.category === 'thanks') {
+        document.getElementById('englishThanksMessage').textContent = template.english;
+        document.getElementById('frenchThanksMessage').textContent = template.french;
+        document.getElementById('thanksMessageContainer').style.display = 'block';
+        document.getElementById('copyThanksBtn').style.display = 'block';
+        document.getElementById('copyThanksEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+        openTab('thanksTab');
+      } else if (template.category === 'problem') {
+        document.getElementById('englishProblemMessage').textContent = template.english;
+        document.getElementById('frenchProblemMessage').textContent = template.french;
+        document.getElementById('problemMessageContainer').style.display = 'block';
+        document.getElementById('copyProblemBtn').style.display = 'block';
+        document.getElementById('copyProblemEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+        openTab('problemTab');
+      } else {
+        document.getElementById('englishMessage').textContent = template.english;
+        document.getElementById('frenchMessage').textContent = template.french;
+        document.getElementById('messageContainer').style.display = 'block';
+        document.getElementById('copyBtn').style.display = 'block';
+        document.getElementById('copyEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+        openTab('sellTab');
+      }
+
+      if (settings.autoCopy) {
+        if (template.category === 'thanks') {
+          copyFrenchThanksMessage();
+        } else if (template.category === 'problem') {
+          copyFrenchProblemMessage();
+        } else {
+          copyFrenchMessage();
+        }
+      }
+    }
+
+    function deleteCustomTemplate(index) {
+      if (confirm('Are you sure you want to delete this template?')) {
+        customTemplates.splice(index, 1);
+        localStorage.setItem('cryptoSellTemplates', JSON.stringify(customTemplates));
+        loadCustomTemplates();
+        showNotification('Template deleted successfully!');
+      }
+    }
+
+    function loadHistory() {
+      const historyList = document.getElementById('historyList');
+      historyList.innerHTML = '';
+
+      if (messageHistory.length === 0) {
+        historyList.innerHTML = '<p>No history yet.</p>';
+        return;
+      }
+
+      messageHistory.forEach((item, index) => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+
+        const typeBadge = document.createElement('span');
+        typeBadge.textContent = item.type.toUpperCase();
+        typeBadge.style.fontWeight = 'bold';
+        typeBadge.style.marginRight = '10px';
+        typeBadge.style.color = item.type === 'sell' ? '#3498db' : item.type === 'thanks' ? '#2ecc71' : '#e74c3c';
+
+        const dateSpan = document.createElement('span');
+        dateSpan.textContent = new Date(item.timestamp).toLocaleString();
+        dateSpan.style.color = '#7f8c8d';
+        dateSpan.style.fontSize = '12px';
+        dateSpan.style.marginRight = '10px';
+
+        const previewSpan = document.createElement('span');
+        previewSpan.textContent = item.french.length > 50 ? item.french.substring(0, 50) + '...' : item.french;
+
+        historyItem.appendChild(typeBadge);
+        historyItem.appendChild(dateSpan);
+        historyItem.appendChild(previewSpan);
+
+        historyItem.onclick = () => {
+          if (item.type === 'sell') {
+            document.getElementById('englishMessage').textContent = item.english;
+            document.getElementById('frenchMessage').textContent = item.french;
+            document.getElementById('messageCategory').textContent = item.category;
+            document.getElementById('messageContainer').style.display = 'block';
+            document.getElementById('copyBtn').style.display = 'block';
+            document.getElementById('copyEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+            openTab('sellTab');
+          } else if (item.type === 'thanks') {
+            document.getElementById('englishThanksMessage').textContent = item.english;
+            document.getElementById('frenchThanksMessage').textContent = item.french;
+            document.getElementById('thanksMessageCategory').textContent = item.category;
+            document.getElementById('thanksMessageContainer').style.display = 'block';
+            document.getElementById('copyThanksBtn').style.display = 'block';
+            document.getElementById('copyThanksEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+            openTab('thanksTab');
+          } else if (item.type === 'problem') {
+            document.getElementById('englishProblemMessage').textContent = item.english;
+            document.getElementById('frenchProblemMessage').textContent = item.french;
+            document.getElementById('problemMessageCategory').textContent = item.category;
+            document.getElementById('problemMessageContainer').style.display = 'block';
+            document.getElementById('copyProblemBtn').style.display = 'block';
+            document.getElementById('copyProblemEngBtn').style.display = settings.showEnglish ? 'block' : 'none';
+            openTab('problemTab');
+          }
+        };
+
+        historyList.appendChild(historyItem);
+      });
+    }
+
+    function clearHistory() {
+      if (confirm('Are you sure you want to clear all history?')) {
+        messageHistory = [];
+        localStorage.setItem('cryptoSellHistory', JSON.stringify(messageHistory));
+        loadHistory();
+        showNotification('History cleared successfully!');
+      }
+    }
+  </script>
+</body>
+</html>
