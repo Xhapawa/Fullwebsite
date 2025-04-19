@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P2P Communication Template Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    input, select, button, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      outline: none;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 20px;
+      padding: 12px;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    button.secondary {
+      background-color: #95a5a6;
+    }
+
+    button.secondary:hover {
+      background-color: #7f8c8d;
+    }
+
+    .message-container {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      word-wrap: break-word;
+      border-left: 4px solid #3498db;
+    }
+
+    .english-message {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed #ddd;
+    }
+
+    .french-message {
+      color: #2c3e50;
+    }
+
+    .message-label {
+      font-weight: normal;
+      font-style: italic;
+      color: #7f8c8d;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 14px;
+    }
+
+    .category-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      background-color: #e8f4fc;
+      border-radius: 15px;
+      font-size: 12px;
+      margin-left: 10px;
+      color: #2980b9;
+      font-weight: 600;
+    }
+
+    .copy-btn {
+      background-color: #2ecc71;
+      margin-top: 15px;
+    }
+
+    .copy-btn:hover {
+      background-color: #27ae60;
+    }
+
+    #copyNotification {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #2ecc71;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1000;
+      font-weight: 500;
+    }
+
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #ecf0f1;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #7f8c8d;
+      transition: all 0.3s;
+    }
+
+    .tab-btn.active {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 15px;
+    }
+
+    .input-group > div {
+      flex: 1;
+    }
+
+    .custom-template {
+      margin-top: 20px;
+    }
+
+    .custom-template textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .tabs-container {
+      margin-bottom: 20px;
+    }
+
+    .emoji-selector {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .emoji-option {
+      font-size: 20px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: #f1f1f1;
+    }
+
+    .emoji-option:hover {
+      background: #ddd;
+    }
+
+    .history-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+
+    .history-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    .history-container {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .settings-option {
+      margin: 15px 0;
+    }
+
+    .settings-option label {
+      display: inline-block;
+      margin-left: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 7px;
+      background-color: #e74c3c;
+      color: white;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>P2P Communication Template Generator</h2>
+    
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="openTab('requestTab')">Payment Request</button>
+      <button class="tab-btn" onclick="openTab('thanksTab')">Thank You</button>
+      <button class="tab-btn" onclick="openTab('problemTab')">Problem Report</button>
+      <button class="tab-btn" onclick="openTab('customTab')">Custom Template</button>
+      <button class="tab-btn" onclick="openTab('historyTab')">History</button>
+      <button class="tab-btn" onclick="openTab('settingsTab')">Settings</button>
+    </div>
+
+    <div id="requestTab" class="tab-content active">
+      <div class="input-group">
+        <div>
+          <label for="requestedAmount">Requested Amount (XOF):</label>
+          <input type="number" id="requestedAmount" placeholder="Enter the requested amount" />
+        </div>
+        <div>
+          <label for="removeAmount">Amount to Remove (XOF):</label>
+          <input type="number" id="removeAmount" placeholder="Enter the amount to remove" />
+        </div>
+      </div>
+
+      <div>
+        <label for="destination">Destination:</label>
+        <select id="destination">
+          <option value="burkina">Burkina Faso</option>
+          <option value="international">International</option>
+          <option value="mali">Mali</option>
+          <option value="senegal">Senegal</option>
+          <option value="ivorycoast">Ivory Coast</option>
+          <option value="togo">Togo</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="category">Message Category:</label>
+        <select id="category">
+          <option value="all">All Categories</option>
+          <option value="polite">Polite</option>
+          <option value="humble">Humble</option>
+          <option value="begging">Begging</option>
+          <option value="formal">Formal/Respectful</option>
+          <option value="urgent">Urgent/Desperate</option>
+          <option value="business">Business Professional</option>
+          <option value="friendly">Friendly Approach</option>
+          <option value="repeat">Repeat Customer</option>
+          <option value="negotiate">Negotiation</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Add Emoji:</label>
+        <div class="emoji-selector">
+          <span class="emoji-option" onclick="addEmoji('🙏')">🙏</span>
+          <span class="emoji-option" onclick="addEmoji('😊')">😊</span>
+          <span class="emoji-option" onclick="addEmoji('👍')">👍</span>
+          <span class="emoji-option" onclick="addEmoji('💵')">💵</span>
+          <span class="emoji-option" onclick="addEmoji('🚀')">🚀</span>
+          <span class="emoji-option" onclick="addEmoji('⏱️')">⏱️</span>
+          <span class="emoji-option" onclick="addEmoji('😢')">😢</span>
+          <span class="emoji-option" onclick="addEmoji('🤝')">🤝</span>
+          <span class="emoji-option" onclick="addEmoji('🙌')">🙌</span>
+          <span class="emoji-option" onclick="addEmoji('✨')">✨</span>
+        </div>
+      </div>
+
+      <button onclick="generateMessages()">Generate Messages</button>
+      <button class="secondary" onclick="saveTemplate()">Save as Custom Template</button>
+
+      <div id="messageContainer" class="message-container" style="display: none;">
+        <div class="english-message">
+          <span class="message-label">English Message: <span id="messageCategory" class="category-tag">Category</span></span>
+          <div id="englishMessage"></div>
+        </div>
+        <div class="french-message">
+          <span class="message-label">Message Français:</span>
+          <div id="frenchMessage"></div>
+        </div>
+      </div>
+
+      <button id="copyBtn" class="copy-btn" onclick="copyFrenchMessage()" style="display: none;">Copy French Message</button>
+      <button id="copyEngBtn" class="copy-btn secondary" onclick="copyEnglishMessage()" style="display: none;">Copy English Message</button>
+    </div>
+
+    <div id="thanksTab" class="tab-content">
+      <div>
+        <label for="thanksCategory">Message Style:</label>
+        <select id="thanksCategory">
+          <option value="all">All Styles</option>
+          <option value="friendly">Friendly</option>
+          <option value="professional">Professional</option>
+          <option value="grateful">Grateful</option>
+          <option value="warm">Warm</option>
+          <option value="formal">Formal</option>
+          <option value="enthusiastic">Enthusiastic</option>
+          <option value="brief">Brief & Simple</option>
+          <option value="detailed">Detailed</option>
+          <option value="humorous">Humorous</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Add Emoji:</label>
+        <div class="emoji-selector">
+          <span class="emoji-option" onclick="addThanksEmoji('😊')">😊</span>
+          <span class="emoji-option" onclick="addThanksEmoji('👍')">👍</span>
+          <span class="emoji-option" onclick="addThanksEmoji('🙏')">🙏</span>
+          <span class="emoji-option" onclick="addThanksEmoji('🚀')">🚀</span>
+          <span class="emoji-option" onclick="addThanksEmoji('💯')">💯</span>
+          <span class="emoji-option" onclick="addThanksEmoji('✨')">✨</span>
+          <span class="emoji-option" onclick="addThanksEmoji('🤝')">🤝</span>
+          <span class="emoji-option" onclick="addThanksEmoji('👏')">👏</span>
+          <span class="emoji-option" onclick="addThanksEmoji('🎉')">🎉</span>
+          <span class="emoji-option" onclick="addThanksEmoji('🙌')">🙌</span>
+        </div>
+      </div>
+
+      <button onclick="generateThankYouMessages()">Generate Thank You Messages</button>
+      <button class="secondary" onclick="saveThanksTemplate()">Save as Custom Template</button>
+
+      <div id="thanksMessageContainer" class="message-container" style="display: none;">
+        <div class="english-message">
+          <span class="message-label">English Message: <span id="thanksMessageCategory" class="category-tag">Style</span></span>
+          <div id="englishThanksMessage"></div>
+        </div>
+        <div class="french-message">
+          <span class="message-label">Message Français:</span>
+          <div id="frenchThanksMessage"></div>
+        </div>
+      </div>
+
+      <button id="copyThanksBtn" class="copy-btn" onclick="copyFrenchThanksMessage()" style="display: none;">Copy French Message</button>
+      <button id="copyThanksEngBtn" class="copy-btn secondary" onclick="copyEnglishThanksMessage()" style="display: none;">Copy English Message</button>
+    </div>
+
+    <div id="problemTab" class="tab-content">
+      <div>
+  <label for="problemType">Problem Type:</label>
+  <select id="problemType">
+    <option value="all">All Problem Types</option>
+    <option value="payment">Payment Issue</option>
+    <option value="delay">Transaction Delay</option>
+    <option value="amount">Incorrect Amount</option>
+    <option value="account">Account Problem</option>
+    <option value="feedback">Feedback Issue</option>
+    <option value="misunderstanding">Misunderstanding</option>
+  </select>
+</div>
+
+      <div>
+        <label for="problemSeverity">Severity:</label>
+        <select id="problemSeverity">
+          <option value="minor">Minor Issue</option>
+          <option value="medium">Medium Issue</option>
+          <option value="serious">Serious Issue</option>
+          <option value="urgent">Urgent Problem</option>
+        </select>
+      </div>
+
+      <div class="custom-template">
+        <label for="problemDetails">Additional Details (optional):</label>
+        <textarea id="problemDetails" placeholder="Add any specific details about the problem"></textarea>
+      </div>
+
+      <button onclick="generateProblemMessages()">Generate Problem Messages</button>
+
+      <div id="problemMessageContainer" class="message-container" style="display: none;">
+        <div class="english-message">
+          <span class="message-label">English Message: <span id="problemMessageCategory" class="category-tag">Type</span></span>
+          <div id="englishProblemMessage"></div>
+        </div>
+        <div class="french-message">
+          <span class="message-label">Message Français:</span>
+          <div id="frenchProblemMessage"></div>
+        </div>
+      </div>
+
+      <button id="copyProblemBtn" class="copy-btn" onclick="copyFrenchProblemMessage()" style="display: none;">Copy French Message</button>
+      <button id="copyProblemEngBtn" class="copy-btn secondary" onclick="copyEnglishProblemMessage()" style="display: none;">Copy English Message</button>
+    </div>
+
+    <div id="customTab" class="tab-content">
+      <div>
+        <label for="customTemplateName">Template Name:</label>
+        <input type="text" id="customTemplateName" placeholder="Give your template a name">
+      </div>
+
+      <div class="custom-template">
+        <label for="customEnglish">English Template:</label>
+        <textarea id="customEnglish" placeholder="Enter your English template here. Use {{amount}} as placeholder."></textarea>
+      </div>
+
+      <div class="custom-template">
+        <label for="customFrench">French Template:</label>
+        <textarea id="customFrench" placeholder="Enter your French template here. Use {{amount}} as placeholder."></textarea>
+      </div>
+
+      <div>
+        <label for="customCategory">Category:</label>
+        <select id="customCategory">
+          <option value="request">Payment Request</option>
+          <option value="thanks">Thank You</option>
+          <option value="problem">Problem Report</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <button onclick="saveCustomTemplate()">Save Custom Template</button>
+      <button class="secondary" onclick="loadCustomTemplates()">Load My Templates</button>
+
+      <div id="customTemplatesContainer" style="margin-top: 20px;"></div>
+    </div>
+
+    <div id="historyTab" class="tab-content">
+      <h3>Message History</h3>
+      <div id="historyList" class="history-container">
+        <!-- History items will be added here dynamically -->
+      </div>
+      <button onclick="clearHistory()" style="margin-top: 15px;">Clear History</button>
+    </div>
+
+    <div id="settingsTab" class="tab-content">
+      <h3>Settings</h3>
+      
+      <div class="settings-option">
+        <input type="checkbox" id="saveHistory" checked>
+        <label for="saveHistory">Save message history</label>
+      </div>
+      
+      <div class="settings-option">
+        <input type="checkbox" id="darkMode">
+        <label for="darkMode">Enable dark mode</label>
+      </div>
+      
+      <div class="settings-option">
+        <input type="checkbox" id="autoCopy" checked>
+        <label for="autoCopy">Auto-copy French message</label>
+      </div>
+      
+      <div class="settings-option">
+        <input type="checkbox" id="showEnglish" checked>
+        <label for="showEnglish">Show English version</label>
+      </div>
+      
+      <div class="settings-option">
+        <label for="defaultCategory">Default category:</label>
+        <select id="defaultCategory">
+          <option value="polite">Polite</option>
+          <option value="humble">Humble</option>
+          <option value="formal">Formal</option>
+          <option value="friendly">Friendly</option>
+        </select>
+      </div>
+      
+      <button onclick="saveSettings()">Save Settings</button>
+      <button class="secondary" onclick="resetSettings()">Reset to Defaults</button>
+    </div>
+  </div>
+
+  <div id="copyNotification">Message copied successfully! ✓</div>
+
+  <script>
+    // Enhanced message templates with more categories and variations
+    const messageTemplates = {
+      polite: {
+        en: [
+          "Please, may I send just {{sentAmount}} XOF instead of {{requestedAmount}}? It's a minor difference, but I am eager to proceed with our transaction. I always transfer quickly. Can I proceed? Always give me positive feedback upon successful completion of order. 🙏",
+          "Dear Sir, I hope you don't mind, but can I send {{sentAmount}} XOF instead of {{requestedAmount}}? It's a small change, and I would appreciate the opportunity to do business with you. I will transfer swiftly. Should I continue? Please leave positive feedback after successful transaction. 🙏",
+          "Would it be possible to send {{sentAmount}} XOF instead of {{requestedAmount}}? I hope you can accommodate this small difference. I transfer very quickly. Please let me know if I can proceed. Your positive feedback after completion would be appreciated. 🙏",
+          "I politely ask if I could send {{sentAmount}} XOF instead of {{requestedAmount}}. The difference is small, and I'm very reliable with transfers. May I go ahead? Kindly provide positive feedback when we complete successfully. 🙏",
+          "Would you kindly allow me to send {{sentAmount}} XOF instead of {{requestedAmount}}? It's not a big difference, and I transfer funds rapidly. Let me know if I can continue. Don't forget to leave positive feedback after. 🙏"
+        ],
+        fr: [
+          "S'il vous plaît, puis-je envoyer seulement {{sentAmount}} XOF au lieu de {{requestedAmount}}? C'est une différence mineure, mais je suis très impatient de poursuivre notre transaction. Je transfère toujours rapidement. Puis-je procéder? Laissez un avis positif après la transaction réussie. 🙏",
+          "Cher Monsieur, j'espère que cela ne vous dérange pas, mais puis-je envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}? Ce n'est qu'un petit changement, et j'apprécierais l'opportunité de faire affaire avec vous. Je transfère rapidement. Dois-je continuer? N'oubliez pas de donner un feedback positif après. 🙏",
+          "Serait-il possible d'envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}? J'espère que vous pouvez accepter cette petite différence. Je transfère très rapidement. Veuillez me dire si je peux procéder. Votre avis positif après réussite serait apprécié. 🙏",
+          "Je demande poliment si je peux envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. La différence est petite, et je transférerai tout de suite. Puis-je aller de l'avant? Feedback positif après succès, s'il vous plaît. 🙏",
+          "Voudriez-vous bien me permettre d'envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}? Ce n'est pas une grande différence, et je transfère les fonds rapidement. Dites-moi si je peux continuer. Laissez un avis positif après, merci. 🙏"
+        ]
+      },
+      humble: {
+        en: [
+          "I humbly ask for your permission to send {{sentAmount}} XOF instead of {{requestedAmount}}. It's not a big difference, but I'd love to continue our business. I send very quickly. May I proceed? Always give me positive feedback upon successful completion of order. 🙏",
+          "I would be grateful if you could accept {{sentAmount}} XOF instead of {{requestedAmount}}. It's a small change, and I transfer funds quickly. Can I go ahead? Please leave positive feedback after successful transaction. 🙏",
+          "I'm humbly asking to send {{sentAmount}} XOF instead of {{requestedAmount}}. It's a minor change, and I always transfer fast. Please let me know if I can continue. Your positive feedback after completion would be appreciated. 🙏",
+          "I kindly request to send {{sentAmount}} XOF instead of {{requestedAmount}}. It's not a big difference, and I promise to transfer right away. Can I proceed? Kindly provide positive feedback when we complete successfully. 🙏",
+          "I respectfully ask if I can send {{sentAmount}} XOF instead of {{requestedAmount}}. It's a small adjustment that would help me. I transfer very quickly. Do I have your permission to continue? Don't forget to leave positive feedback after. 🙏"
+        ],
+        fr: [
+          "Je vous demande humblement la permission d'envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. Ce n'est pas une grande différence, mais j'aimerais continuer nos affaires. Je transfère très rapidement. Puis-je procéder? Donnez-moi toujours un retour positif après la réussite de la commande. 🙏",
+          "Je serais reconnaissant si vous pouviez accepter {{sentAmount}} XOF au lieu de {{requestedAmount}}. C'est un petit changement, et je transfère les fonds rapidement. Puis-je aller de l'avant? Laissez un avis positif après la transaction réussie. 🙏",
+          "Je demande humblement d'envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. C'est un changement mineur, et je transfère toujours rapidement. Veuillez me dire si je peux continuer. Votre avis positif après réussite serait apprécié. 🙏",
+          "Je demande gentiment d'envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. Ce n'est pas une grande différence, et je promets de transférer tout de suite. Puis-je procéder? Feedback positif après succès, s'il vous plaît. 🙏",
+          "Je demande respectueusement si je peux envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. C'est un petit ajustement qui m'aiderait. Je transfère très rapidement. Ai-je votre permission pour continuer? N'oubliez pas votre feedback positif. 🙏"
+        ]
+      },
+      begging: {
+        en: [
+          "Boss, can I send {{sentAmount}} XOF instead of {{requestedAmount}}? It's just a small difference, and I would really love to do business with you. I transfer very fast. Please tell me I can continue! Always give me positive feedback upon successful completion of order. 🙏",
+          "Please please, can I just send {{sentAmount}} XOF instead of {{requestedAmount}}? I'm begging you to understand, it's such a small difference. I will transfer immediately. Can I proceed? Please leave positive feedback after successful transaction. 🙏🙏",
+          "I'm desperately hoping you'll let me send {{sentAmount}} XOF instead of {{requestedAmount}}. The difference isn't much, and I'm so eager to work with you. I'll send the money right away. May I continue? Your positive feedback after completion would be appreciated. 🙏🙏",
+          "I beg you to accept {{sentAmount}} XOF instead of {{requestedAmount}}. Please understand my situation, the difference is small. I promise to transfer instantly. Just tell me I can proceed! Kindly provide positive feedback when we complete successfully. 🙏🙏🙏",
+          "Dear boss, please let me send {{sentAmount}} XOF instead of {{requestedAmount}}. It's just a minor change, and I'm serious about doing business. I transfer fast. Can I go ahead? Don't forget to leave positive feedback after. 🙏"
+        ],
+        fr: [
+          "Patron, puis-je envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}? Ce n'est qu'une petite différence, et je serais vraiment heureux de faire des affaires avec vous. Je transfère très rapidement. S'il vous plaît, dites-moi que je peux continuer! Donnez-moi toujours un retour positif après la réussite de la commande. 🙏",
+          "S'il vous plaît s'il vous plaît, puis-je envoyer seulement {{sentAmount}} XOF au lieu de {{requestedAmount}}? Je vous supplie de comprendre, c'est une si petite différence. Je vais transférer immédiatement. Puis-je procéder? Laissez un avis positif après la transaction réussie. 🙏🙏",
+          "J'espère désespérément que vous me laisserez envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. La différence n'est pas grande, et je suis tellement impatient de travailler avec vous. J'enverrai l'argent tout de suite. Puis-je continuer? Votre avis positif après réussite serait apprécié. 🙏🙏",
+          "Je vous supplie d'accepter {{sentAmount}} XOF au lieu de {{requestedAmount}}. Veuillez comprendre ma situation, la différence est petite. Je promets de transférer instantanément. Dites-moi simplement que je peux procéder! Feedback positif après succès, s'il vous plaît. 🙏🙏🙏",
+          "Cher patron, s'il vous plaît laissez-moi envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. C'est juste un changement mineur, et je suis sérieux à propos des affaires. Je transfère rapidement. Puis-je aller de l'avant? N'oubliez pas votre feedback positif. 🙏"
+        ]
+      },
+      formal: {
+        en: [
+          "Respected sir, kindly allow me to send {{sentAmount}} XOF instead of {{requestedAmount}}. I hope this small change is acceptable. I transfer very fast. May I proceed with your approval? Always give me positive feedback upon successful completion of order. 🙏",
+          "Dear Sir, I hope you don't mind, but can I send {{sentAmount}} XOF instead of {{requestedAmount}}? It's a small change, and I would appreciate the opportunity to do business with you. I will transfer swiftly. Please confirm if I may continue. Please leave positive feedback after successful transaction. 🙏",
+          "I'm writing to formally request your permission to send {{sentAmount}} XOF instead of {{requestedAmount}}. The difference is minimal, and I assure you of my prompt payment. May I have your approval to proceed? Your positive feedback after completion would be appreciated. 🙏",
+          "With due respect, I would like to request sending {{sentAmount}} XOF instead of {{requestedAmount}}. I hope this minor adjustment is acceptable. I transfer funds immediately. Please confirm I may continue. Kindly provide positive feedback when we complete successfully. 🙏",
+          "Dear esteemed client, would you be so kind as to allow me to transfer {{sentAmount}} XOF rather than {{requestedAmount}}? The difference is small, and I will transfer without delay. Kindly indicate if I may proceed. Don't forget to leave positive feedback after. 🙏"
+        ],
+        fr: [
+          "Respecté monsieur, veuillez me permettre d'envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. J'espère que ce petit changement est acceptable. Je transfère très vite. Puis-je procéder avec votre approbation? Donnez-moi toujours un retour positif après la réussite de la commande. 🙏",
+          "Cher Monsieur, j'espère que cela ne vous dérange pas, mais puis-je envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}? Ce n'est qu'un petit changement, et j'apprécierais l'opportunité de faire affaire avec vous. Je transfère rapidement. Veuillez confirmer si je peux continuer. Laissez un avis positif après la transaction réussie. 🙏",
+          "Je vous écris pour demander formellement votre permission d'envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. La différence est minime, et je vous assure de mon paiement rapide. Puis-je avoir votre approbation pour procéder? Votre avis positif après réussite serait apprécié. 🙏",
+          "Avec tout le respect que je vous dois, je voudrais demander d'envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. J'espère que cet ajustement mineur est acceptable. Je transfère les fonds immédiatement. Veuillez confirmer que je peux continuer. Feedback positif après succès, s'il vous plaît. 🙏",
+          "Cher estimé client, seriez-vous assez aimable pour me permettre de transférer {{sentAmount}} XOF plutôt que {{requestedAmount}}? La différence est petite, et je transférerai sans délai. Veuillez indiquer si je peux procéder. N'oubliez pas votre feedback positif. 🙏"
+        ]
+      },
+      urgent: {
+        en: [
+          "I need to urgently send {{sentAmount}} XOF instead of {{requestedAmount}}. Please approve quickly, it's just a small difference. I will transfer immediately. Can I proceed now? Always give me positive feedback upon successful completion of order. 🙏⏱️",
+          "URGENT: Can I send {{sentAmount}} XOF instead of {{requestedAmount}}? Need your quick response, the difference is minimal. I transfer right away. Please confirm I can continue! Please leave positive feedback after successful transaction. 🙏⚡",
+          "This is urgent! Please allow me to send {{sentAmount}} XOF instead of {{requestedAmount}}. Time is critical, and I'll transfer instantly upon your approval. Can I proceed? Your positive feedback after completion would be appreciated. 🙏⏰",
+          "I'm in a hurry and need to send {{sentAmount}} XOF instead of {{requestedAmount}} urgently. Please respond quickly, the difference is small. Fast transfer guaranteed. May I continue now? Kindly provide positive feedback when we complete successfully. 🙏🔥",
+          "Urgent request: Approve {{sentAmount}} XOF instead of {{requestedAmount}}. I need to proceed now. Small difference but time-sensitive. I transfer instantly. Can I continue? Don't forget to leave positive feedback after. 🙏⏱️"
+        ],
+        fr: [
+          "J'ai besoin d'envoyer urgemment {{sentAmount}} XOF au lieu de {{requestedAmount}}. Veuillez approuver rapidement, c'est juste une petite différence. Je transférerai immédiatement. Puis-je procéder maintenant? Donnez-moi toujours un retour positif après la réussite de la commande. 🙏⏱️",
+          "URGENT: Puis-je envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}? Besoin de votre réponse rapide, la différence est minime. Je transfère tout de suite. Veuillez confirmer que je peux continuer! Laissez un avis positif après la transaction réussie. 🙏⚡",
+          "C'est urgent! Veuillez me permettre d'envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}. Le temps est critique, et je transférerai instantanément dès votre approbation. Puis-je procéder? Votre avis positif après réussite serait apprécié. 🙏⏰",
+          "Je suis pressé et dois envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}} de toute urgence. Veuillez répondre rapidement, la différence est petite. Transfert rapide garanti. Puis-je continuer maintenant? Feedback positif après succès, s'il vous plaît. 🙏🔥",
+          "Demande urgente: Approuvez {{sentAmount}} XOF au lieu de {{requestedAmount}}. Je dois procéder maintenant. Petite différence mais urgent. Je transfère instantanément. Puis-je continuer? N'oubliez pas votre feedback positif. 🙏⏱️"
+        ]
+      },
+      business: {
+        en: [
+          "For our business records, I'd like to confirm sending {{sentAmount}} XOF instead of the original {{requestedAmount}}. This small adjustment will help streamline our transaction. I'll process the transfer immediately upon your confirmation. Please acknowledge receipt with positive feedback when completed.",
+          "Per our business agreement, I propose sending {{sentAmount}} XOF rather than {{requestedAmount}} to optimize this transaction. The difference is minimal but beneficial for both parties. Please confirm if I should proceed with the transfer. Kindly provide positive feedback upon successful completion.",
+          "To maintain our professional relationship, I'd like to adjust the amount to {{sentAmount}} XOF instead of {{requestedAmount}}. This minor change will facilitate a smoother transaction. I'm ready to transfer immediately upon your approval. Your positive feedback would be appreciated.",
+          "For efficient business processing, may I send {{sentAmount}} XOF instead of {{requestedAmount}}? This small difference will help both of us. I can execute the transfer right away. Please confirm and leave positive feedback when we conclude.",
+          "In the interest of our business partnership, I suggest sending {{sentAmount}} XOF rather than {{requestedAmount}}. This adjustment is standard practice and will benefit our transaction. Ready to transfer upon your confirmation. Please acknowledge with positive feedback."
+        ],
+        fr: [
+          "Pour nos dossiers commerciaux, je voudrais confirmer l'envoi de {{sentAmount}} XOF au lieu des {{requestedAmount}} originaux. Ce petit ajustement aidera à rationaliser notre transaction. Je traiterai le transfert immédiatement après votre confirmation. Veuillez accuser réception avec un avis positif lorsque terminé.",
+          "Conformément à notre accord commercial, je propose d'envoyer {{sentAmount}} XOF plutôt que {{requestedAmount}} pour optimiser cette transaction. La différence est minime mais bénéfique pour les deux parties. Veuillez confirmer si je dois procéder au transfert. Merci de fournir un feedback positif après réussite.",
+          "Pour maintenir notre relation professionnelle, je voudrais ajuster le montant à {{sentAmount}} XOF au lieu de {{requestedAmount}}. Ce petit changement facilitera une transaction plus fluide. Je suis prêt à transférer immédiatement après votre approbation. Votre avis positif serait apprécié.",
+          "Pour un traitement commercial efficace, puis-je envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}? Cette petite différence nous aidera tous les deux. Je peux exécuter le transfert tout de suite. Veuillez confirmer et laisser un avis positif lorsque nous concluons.",
+          "Dans l'intérêt de notre partenariat commercial, je suggère d'envoyer {{sentAmount}} XOF plutôt que {{requestedAmount}}. Cet ajustement est une pratique standard et bénéficiera à notre transaction. Prêt à transférer dès votre confirmation. Veuillez accuser réception avec un avis positif."
+        ]
+      },
+      friendly: {
+        en: [
+          "Hey there! Would it be okay if I send {{sentAmount}} XOF instead of {{requestedAmount}}? Just a small difference, and I promise to transfer super fast! Let me know if I can go ahead. Don't forget to leave me some positive feedback! 😊",
+          "Hi friend! I was hoping I could send {{sentAmount}} XOF rather than {{requestedAmount}} - it's just a tiny change. I'll get the money to you right away if that's cool with you. Positive feedback would be awesome when we're done! 👍",
+          "Hello! Mind if I send {{sentAmount}} XOF instead of {{requestedAmount}}? It's barely any different, and I'll transfer immediately. Let me know if that works for you! Would really appreciate your positive feedback after. 🙏",
+          "Hi! Quick question - can I do {{sentAmount}} XOF instead of {{requestedAmount}}? Just a small adjustment. I'll send the money over right now if that's okay with you. Your positive feedback means a lot! ✨",
+          "Hey! Would you be cool with {{sentAmount}} XOF instead of {{requestedAmount}}? It's practically the same, and I'll transfer instantly. Let me know if I should proceed! Don't forget to leave positive feedback when we finish. 🤝"
+        ],
+        fr: [
+          "Salut! Ça te dérangerait si j'envoie {{sentAmount}} XOF au lieu de {{requestedAmount}}? Juste une petite différence, et je promets de transférer super vite! Dis-moi si je peux y aller. N'oublie pas de me laisser un avis positif! 😊",
+          "Salut mon pote! J'espérais pouvoir envoyer {{sentAmount}} XOF plutôt que {{requestedAmount}} - c'est juste un petit changement. Je t'enverrai l'argent tout de suite si ça te va. Un avis positif serait génial quand on aura fini! 👍",
+          "Bonjour! Ça te dérange si j'envoie {{sentAmount}} XOF au lieu de {{requestedAmount}}? C'est à peine différent, et je transférerai immédiatement. Dis-moi si ça te convient! J'apprécierais vraiment ton avis positif après. 🙏",
+          "Salut! Petite question - puis-je faire {{sentAmount}} XOF au lieu de {{requestedAmount}}? Juste un petit ajustement. Je t'envoie l'argent tout de suite si ça te va. Ton avis positif compte beaucoup! ✨",
+          "Hey! Serais-tu d'accord avec {{sentAmount}} XOF au lieu de {{requestedAmount}}? C'est pratiquement pareil, et je transférerai instantanément. Dis-moi si je dois procéder! N'oublie pas de laisser un avis positif quand on aura fini. 🤝"
+        ]
+      },
+      repeat: {
+        en: [
+          "As a repeat customer, I was hoping you could accept {{sentAmount}} XOF instead of {{requestedAmount}} this time. You know I always transfer quickly! Can I proceed? As always, I'll leave you positive feedback when we're done. 🙏",
+          "Since we've done business before, would you consider accepting {{sentAmount}} XOF rather than {{requestedAmount}}? I value our transactions and will transfer immediately. Let me know if I can continue. Positive feedback guaranteed! 👍",
+          "Given our successful past transactions, may I send {{sentAmount}} XOF instead of {{requestedAmount}}? You can count on my fast transfer as always. Should I go ahead? I'll be sure to leave you glowing feedback. 😊",
+          "As a loyal customer, I'd appreciate if you could accept {{sentAmount}} XOF instead of {{requestedAmount}}. I'll process the transfer right away as I've always done. Can I proceed? Your positive feedback is always my priority. ✨",
+          "Given our good business relationship, could we do {{sentAmount}} XOF instead of {{requestedAmount}} this time? I'll transfer instantly as usual. Let me know if that works! I'll leave you the positive feedback you deserve. 🤝"
+        ],
+        fr: [
+          "En tant que client régulier, j'espérais que vous pourriez accepter {{sentAmount}} XOF au lieu de {{requestedAmount}} cette fois. Vous savez que je transfère toujours rapidement! Puis-je procéder? Comme toujours, je vous laisserai un avis positif quand nous aurons fini. 🙏",
+          "Puisque nous avons déjà fait affaire, envisageriez-vous d'accepter {{sentAmount}} XOF plutôt que {{requestedAmount}}? Je valorise nos transactions et transférerai immédiatement. Dites-moi si je peux continuer. Feedback positif garanti! 👍",
+          "Compte tenu de nos transactions passées réussies, puis-je envoyer {{sentAmount}} XOF au lieu de {{requestedAmount}}? Vous pouvez compter sur mon transfert rapide comme toujours. Dois-je y aller? Je m'assurerai de vous laisser un avis élogieux. 😊",
+          "En tant que client fidèle, j'apprécierais que vous puissiez accepter {{sentAmount}} XOF au lieu de {{requestedAmount}}. Je traiterai le transfert tout de suite comme je l'ai toujours fait. Puis-je procéder? Votre avis positif est toujours ma priorité. ✨",
+          "Compte tenu de notre bonne relation commerciale, pourrions-nous faire {{sentAmount}} XOF au lieu de {{requestedAmount}} cette fois? Je transférerai instantanément comme d'habitude. Dites-moi si ça marche! Je vous laisserai le feedback positif que vous méritez. 🤝"
+        ]
+      },
+      negotiate: {
+        en: [
+          "Could we negotiate to {{sentAmount}} XOF instead of {{requestedAmount}}? This small adjustment would help me greatly, and I'll transfer immediately. What do you think? I'll be sure to leave positive feedback for your flexibility. 🙏",
+          "I'd like to propose {{sentAmount}} XOF as a counter to your {{requestedAmount}}. It's a reasonable difference, and I can send the money right now. Would this be acceptable? Your positive feedback would be much appreciated. 👍",
+          "Would you be open to accepting {{sentAmount}} XOF instead of {{requestedAmount}}? It's a fair adjustment, and I'm ready to transfer instantly. Let me know your thoughts! I'll make sure to leave you excellent feedback. 😊",
+          "How about we meet at {{sentAmount}} XOF instead of {{requestedAmount}}? I believe this is a good compromise, and I'll process the transfer immediately. Does this work for you? I'll reward your cooperation with positive feedback. ✨",
+          "I'd like to discuss adjusting the amount to {{sentAmount}} XOF rather than {{requestedAmount}}. This seems fair to both parties, and I can transfer right away. Can we proceed? I'll be sure to acknowledge your understanding with positive feedback. 🤝"
+        ],
+        fr: [
+          "Pourrions-nous négocier à {{sentAmount}} XOF au lieu de {{requestedAmount}}? Ce petit ajustement m'aiderait grandement, et je transférerai immédiatement. Qu'en pensez-vous? Je m'assurerai de laisser un avis positif pour votre flexibilité. 🙏",
+          "Je voudrais proposer {{sentAmount}} XOF comme contrepartie à vos {{requestedAmount}}. C'est une différence raisonnable, et je peux envoyer l'argent tout de suite. Serait-ce acceptable? Votre avis positif serait très apprécié. 👍",
+          "Seriez-vous ouvert à accepter {{sentAmount}} XOF au lieu de {{requestedAmount}}? C'est un ajustement équitable, et je suis prêt à transférer instantanément. Faites-moi part de vos réflexions! Je m'assurerai de vous laisser un excellent feedback. 😊",
+          "Et si nous nous rencontrions à {{sentAmount}} XOF au lieu de {{requestedAmount}}? Je crois que c'est un bon compromis, et je traiterai le transfert immédiatement. Est-ce que cela vous convient? Je récompenserai votre coopération par un avis positif. ✨",
+          "Je voudrais discuter de l'ajustement du montant à {{sentAmount}} XOF plutôt qu'à {{requestedAmount}}. Cela semble équitable pour les deux parties, et je peux transférer tout de suite. Pouvons-nous procéder? Je m'assurerai de reconnaître votre compréhension avec un avis positif. 🤝"
+        ]
+      }
+    };
+
+    // Enhanced thank you templates with more categories
+    const thankYouTemplates = {
+      friendly: {
+        en: [
+          "Nice doing business with you! I really appreciate the smooth transaction. Looking forward to our next deal. Please don't forget to leave positive feedback. 😊",
+          "It was a pleasure doing business with you! Everything went perfectly. Let's definitely work together again soon. Positive feedback would be much appreciated! 👍",
+          "Great doing business with you! The transaction was flawless. Hope to collaborate again in the future. Please leave me positive feedback when you get a chance. 😃",
+          "Wonderful doing business with you! Everything went so smoothly. Let's do this again sometime! Your positive feedback would mean a lot to me. 🙏",
+          "Fantastic transaction with you! Really enjoyed how professional everything was. Looking forward to our next deal. Don't forget to leave positive feedback! 😊"
+        ],
+        fr: [
+          "Ravi de faire affaire avec vous! J'apprécie vraiment la transaction fluide. J'ai hâte à notre prochain marché. N'oubliez pas de laisser un avis positif. 😊",
+          "Ce fut un plaisir de faire affaire avec vous! Tout s'est parfaitement déroulé. Travaillons ensemble à nouveau bientôt. Un avis positif serait très apprécié! 👍",
+          "Super de faire affaire avec vous! La transaction s'est déroulée sans problème. J'espère collaborer à nouveau dans le futur. Laissez-moi un avis positif quand vous pourrez. 😃",
+          "Merveilleux de faire affaire avec vous! Tout s'est passé si facilement. Recommençons bientôt! Votre avis positif serait très important pour moi. 🙏",
+          "Transaction fantastique avec vous! J'ai vraiment apprécié votre professionnalisme. J'attends avec impatience notre prochain marché. N'oubliez pas l'avis positif! 😊"
+        ]
+      },
+      professional: {
+        en: [
+          "Thank you for the successful transaction. It was a pleasure doing business with you. I look forward to our future collaborations. Please consider leaving positive feedback. Best regards.",
+          "I appreciate the smooth business transaction we just completed. It was professional working with you. Looking forward to our next deal. Kindly leave positive feedback if satisfied.",
+          "This transaction has been completed successfully. Thank you for your professionalism. I hope we can do business again soon. Please don't forget to leave positive feedback.",
+          "Our business transaction has concluded successfully. I appreciate your efficiency and professionalism. Let's work together again in the future. Positive feedback would be appreciated.",
+          "The transaction was completed without issues. Thank you for your business professionalism. I look forward to our next collaboration. Kindly leave positive feedback when possible."
+        ],
+        fr: [
+          "Merci pour la transaction réussie. Ce fut un plaisir de faire affaire avec vous. J'attends avec impatience nos futures collaborations. Veuillez envisager de laisser un avis positif. Cordialement.",
+          "J'apprécie la transaction fluide que nous venons de terminer. Ce fut professionnel de travailler avec vous. J'attends avec impatience notre prochain marché. Laissez un avis positif si satisfait.",
+          "Cette transaction s'est terminée avec succès. Merci pour votre professionnalisme. J'espère que nous pourrons faire affaire à nouveau bientôt. N'oubliez pas de laisser un avis positif.",
+          "Notre transaction commerciale s'est conclue avec succès. J'apprécie votre efficacité et professionnalisme. Travaillons ensemble à nouveau dans le futur. Un avis positif serait apprécié.",
+          "La transaction s'est terminée sans problème. Merci pour votre professionnalisme commercial. J'attends avec impatience notre prochaine collaboration. Laissez un avis positif quand possible."
+        ]
+      },
+      grateful: {
+        en: [
+          "I'm so grateful for this successful transaction with you! Everything went perfectly. Thank you for your trust. Please leave positive feedback if you're happy with our deal. 🙏",
+          "Thank you so much for this wonderful business transaction! I truly appreciate it. Everything went smoothly. Looking forward to next time. Your positive feedback would mean a lot! 😊",
+          "I'm deeply thankful for this perfect transaction with you! Couldn't have asked for better. Please consider leaving positive feedback. Hope to work together again soon! 🙏",
+          "Heartfelt thanks for this flawless transaction! You're amazing to work with. Really appreciate your professionalism. Please don't forget to leave positive feedback. 😊",
+          "I can't thank you enough for this successful deal! Everything was perfect. You're a great business partner. Looking forward to next time. Positive feedback would be awesome! 👍"
+        ],
+        fr: [
+          "Je suis tellement reconnaissant pour cette transaction réussie avec vous! Tout s'est parfaitement passé. Merci pour votre confiance. Laissez un avis positif si vous êtes satisfait de notre marché. 🙏",
+          "Merci infiniment pour cette merveilleuse transaction commerciale! Je l'apprécie vraiment. Tout s'est déroulé sans problème. J'attends avec impatience la prochaine fois. Votre avis positif serait très important! 😊",
+          "Je suis profondément reconnaissant pour cette transaction parfaite avec vous! Je n'aurais pas pu demander mieux. Veuillez envisager de laisser un avis positif. J'espère travailler avec vous à nouveau bientôt! 🙏",
+          "Remerciements sincères pour cette transaction impeccable! Vous êtes formidable à travailler. J'apprécie vraiment votre professionnalisme. N'oubliez pas de laisser un avis positif. 😊",
+          "Je ne peux pas assez vous remercier pour cette affaire réussie! Tout était parfait. Vous êtes un excellent partenaire commercial. J'attends avec impatience la prochaine fois. Un avis positif serait génial! 👍"
+        ]
+      },
+      warm: {
+        en: [
+          "It was truly wonderful doing business with you! The whole process was so smooth and pleasant. Looking forward to our next transaction. Please leave positive feedback if you're happy! 😊",
+          "What a pleasure doing business with you! Everything was perfect from start to finish. You're amazing to work with. Hope we can do this again soon. Positive feedback would be lovely! 👍",
+          "I just wanted to say how much I enjoyed doing business with you! The transaction couldn't have gone better. Let's definitely work together again. Please leave positive feedback! 😃",
+          "Doing business with you was an absolute delight! Thank you for making everything so easy and pleasant. Looking forward to next time. Your positive feedback would mean a lot! 🙏",
+          "I had such a positive experience doing business with you! Everything was handled perfectly. You're a joy to work with. Hope to collaborate again soon. Please leave positive feedback! 😊"
+        ],
+        fr: [
+          "C'était vraiment merveilleux de faire affaire avec vous! Tout le processus a été si fluide et agréable. J'attends avec impatience notre prochaine transaction. Laissez un avis positif si vous êtes content! 😊",
+          "Quel plaisir de faire affaire avec vous! Tout était parfait du début à la fin. Vous êtes formidable à travailler. J'espère que nous pourrons recommencer bientôt. Un avis positif serait adorable! 👍",
+          "Je voulais juste dire à quel point j'ai apprécié faire affaire avec vous! La transaction n'aurait pas pu mieux se passer. Travaillons ensemble à nouveau. Laissez un avis positif! 😃",
+          "Faire affaire avec vous a été un vrai plaisir! Merci d'avoir tout rendu si facile et agréable. J'attends avec impatience la prochaine fois. Votre avis positif serait très important! 🙏",
+          "J'ai eu une expérience si positive en faisant affaire avec vous! Tout a été géré parfaitement. C'est un plaisir de travailler avec vous. J'espère collaborer à nouveau bientôt. Laissez un avis positif! 😊"
+        ]
+      },
+      formal: {
+        en: [
+          "I wish to express my sincere appreciation for the successful completion of our business transaction. It was a pleasure working with you. I look forward to our future collaborations. Please consider leaving positive feedback.",
+          "Allow me to convey my gratitude for the smooth execution of our transaction. Your professionalism was exemplary. I anticipate our next business engagement with pleasure. Kindly leave positive feedback if satisfied.",
+          "I would like to formally thank you for the successful conclusion of our business transaction. The process was efficient and professional. I hope we may work together again soon. Your positive feedback would be valued.",
+          "Please accept my formal thanks for the flawless completion of our transaction. I appreciated your professionalism throughout. I look forward to our next business opportunity together. Positive feedback would be appreciated.",
+          "I extend my sincere thanks for the professional manner in which our transaction was conducted. Everything proceeded perfectly. I anticipate our next collaboration with pleasure. Please consider leaving positive feedback."
+        ],
+        fr: [
+          "Je tiens à exprimer ma sincère gratitude pour la réussite de notre transaction commerciale. Ce fut un plaisir de travailler avec vous. J'attends avec impatience nos futures collaborations. Veuillez envisager de laisser un avis positif.",
+          "Permettez-moi de vous transmettre ma gratitude pour l'exécution fluide de notre transaction. Votre professionnalisme était exemplaire. J'attends avec plaisir notre prochaine collaboration commerciale. Laissez un avis positif si satisfait.",
+          "Je voudrais vous remercier formellement pour la conclusion réussie de notre transaction commerciale. Le processus a été efficace et professionnel. J'espère que nous pourrons travailler ensemble à nouveau bientôt. Votre avis positif serait valorisé.",
+          "Veuillez accepter mes remerciements formels pour l'achèvement impeccable de notre transaction. J'ai apprécié votre professionnalisme tout au long. J'attends avec impatience notre prochaine opportunité commerciale ensemble. Un avis positif serait apprécié.",
+          "J'adresse mes sincères remerciements pour la manière professionnelle dont notre transaction a été menée. Tout s'est parfaitement déroulé. J'attends avec plaisir notre prochaine collaboration. Veuillez envisager de laisser un avis positif."
+        ]
+      },
+      enthusiastic: {
+        en: [
+          "AMAZING transaction with you! Everything went perfectly smooth - you're fantastic to work with! Can't wait for our next deal. Don't forget to leave that positive feedback! 🎉",
+          "WOW! That was one of the best transactions ever! You're incredible to work with. Everything was perfect. Let's do this again soon! Positive feedback coming your way! ✨",
+          "Absolutely FANTASTIC doing business with you! The whole process was flawless. You're a rockstar! Looking forward to our next transaction. Please leave positive feedback! 🙌",
+          "BEST transaction ever! You made everything so easy and enjoyable. I'm so impressed! Can't wait to work with you again. Your positive feedback would mean the world! 🚀",
+          "INCREDIBLE working with you! That transaction couldn't have gone better. You're truly exceptional at what you do. Next time soon! Don't forget to leave positive feedback! 💯"
+        ],
+        fr: [
+          "Transaction INCROYABLE avec vous! Tout s'est parfaitement déroulé - vous êtes fantastique à travailler! J'ai hâte à notre prochain marché. N'oubliez pas de laisser cet avis positif! 🎉",
+          "WOW! C'était une des meilleures transactions jamais vues! Vous êtes incroyable à travailler. Tout était parfait. Recommençons bientôt! Feedback positif en route vers vous! ✨",
+          "Absolument FANTASTIQUE de faire affaire avec vous! Tout le processus était impeccable. Vous êtes une rockstar! J'attends avec impatience notre prochaine transaction. Laissez un avis positif! 🙌",
+          "MEILLEURE transaction jamais vue! Vous avez tout rendu si facile et agréable. Je suis tellement impressionné! J'ai hâte de travailler avec vous à nouveau. Votre avis positif signifierait tout! 🚀",
+          "INCROYABLE de travailler avec vous! Cette transaction n'aurait pas pu mieux se passer. Vous êtes vraiment exceptionnel dans ce que vous faites. À la prochaine fois bientôt! N'oubliez pas de laisser un avis positif! 💯"
+        ]
+      },
+      brief: {
+        en: [
+          "Thanks for the smooth transaction! Positive feedback left. Until next time!",
+          "Transaction complete. All good! Left you positive feedback.",
+          "Done! Great working with you. Positive feedback given.",
+          "Success! Smooth transaction. Left you positive feedback.",
+          "Completed. Perfect transaction. Positive feedback left for you."
+        ],
+        fr: [
+          "Merci pour la transaction fluide! Avis positif laissé. À la prochaine!",
+          "Transaction terminée. Tout est bon! Je vous ai laissé un avis positif.",
+          "Terminé! Super de travailler avec vous. Feedback positif donné.",
+          "Succès! Transaction fluide. Je vous ai laissé un avis positif.",
+          "Complété. Transaction parfaite. Feedback positif laissé pour vous."
+        ]
+      },
+      detailed: {
+        en: [
+          "I want to thank you for the excellent transaction we just completed. Every aspect was handled professionally and efficiently. The communication was clear, the timing was perfect, and the entire process was seamless. I've left you positive feedback reflecting this outstanding experience and look forward to our next business opportunity together.",
+          "Thank you for the exceptionally smooth transaction. I appreciated your prompt responses, attention to detail, and professional approach throughout our interaction. The entire process from start to finish was handled with care and efficiency. I've made sure to leave you positive feedback that reflects this high-quality service and hope we can work together again soon.",
+          "I'm writing to express my appreciation for the flawless transaction we've just concluded. Your professionalism was evident in every aspect - from our initial communication to the final confirmation. The speed and accuracy of the transaction were particularly impressive. I've left you detailed positive feedback and would be pleased to do business with you again in the future.",
+          "This note is to thank you for the perfect transaction experience. Your responsiveness, clarity in communication, and efficiency in processing made this an exceptionally positive business interaction. I've taken care to leave you comprehensive positive feedback that highlights these qualities and hope we'll have the opportunity to collaborate again under similarly excellent circumstances.",
+          "I'd like to extend my sincere thanks for the outstanding transaction we've completed. Every step was executed with precision and professionalism, making this one of the smoothest business interactions I've experienced. I've left you positive feedback that details all the aspects I appreciated and look forward to the possibility of future transactions with you."
+        ],
+        fr: [
+          "Je tiens à vous remercier pour l'excellente transaction que nous venons de terminer. Chaque aspect a été géré professionnellement et efficacement. La communication était claire, le timing parfait et l'ensemble du processus fluide. Je vous ai laissé un avis positif reflétant cette expérience exceptionnelle et j'ai hâte à notre prochaine opportunité commerciale ensemble.",
+          "Merci pour la transaction exceptionnellement fluide. J'ai apprécié vos réponses rapides, votre attention aux détails et votre approche professionnelle tout au long de notre interaction. L'ensemble du processus du début à la fin a été géré avec soin et efficacité. Je me suis assuré de vous laisser un avis positif qui reflète ce service de haute qualité et j'espère que nous pourrons travailler ensemble à nouveau bientôt.",
+          "J'écris pour exprimer mon appréciation pour la transaction impeccable que nous venons de conclure. Votre professionnalisme était évident dans chaque aspect - depuis notre communication initiale jusqu'à la confirmation finale. La rapidité et la précision de la transaction étaient particulièrement impressionnantes. Je vous ai laissé un avis positif détaillé et serais ravi de faire affaire avec vous à nouveau à l'avenir.",
+          "Cette note vise à vous remercier pour l'expérience de transaction parfaite. Votre réactivité, clarté dans la communication et efficacité dans le traitement ont fait de cette interaction commerciale une expérience exceptionnellement positive. J'ai pris soin de vous laisser un avis positif complet qui met en lumière ces qualités et j'espère que nous aurons l'occasion de collaborer à nouveau dans des circonstances tout aussi excellentes.",
+          "Je voudrais exprimer mes sincères remerciements pour la transaction exceptionnelle que nous avons achevée. Chaque étape a été exécutée avec précision et professionnalisme, faisant de cette interaction l'une des plus fluides que j'ai vécues. Je vous ai laissé un avis positif détaillant tous les aspects que j'ai appréciés et j'attends avec impatience la possibilité de futures transactions avec vous."
+        ]
+      },
+      humorous: {
+        en: [
+          "Transaction completed smoother than a fresh jar of peanut butter! You're awesome to work with. Left you positive feedback - don't spend it all in one place! 😂",
+          "If all transactions were this easy, I'd be out of a job! Fantastic working with you. Positive feedback happily given. Until next time! 🤣",
+          "That transaction was easier than stealing candy from a baby (not that I would know!). You're a pro! Left you glowing positive feedback. 🍭",
+          "Just finished what might be the world's most perfect transaction! You're like the Mozart of P2P deals. Positive feedback composed and delivered! 🎵",
+          "Phew! That transaction was so smooth I almost missed it happening! You're a wizard at this. Left you magical positive feedback. 🧙‍♂️"
+        ],
+        fr: [
+          "Transaction terminée plus facilement qu'un pot de beurre de cacahuète frais! Vous êtes génial à travailler. Je vous ai laissé un avis positif - ne le dépensez pas tout au même endroit! 😂",
+          "Si toutes les transactions étaient aussi faciles, je serais au chômage! Fantastique de travailler avec vous. Feedback positif donné avec plaisir. À la prochaine! 🤣",
+          "Cette transaction était plus facile que de voler des bonbons à un bébé (pas que je sache comment faire!). Vous êtes un pro! Je vous ai laissé un avis positif élogieux. 🍭",
+          "Je viens de terminer ce qui pourrait être la transaction la plus parfaite au monde! Vous êtes comme le Mozart des deals P2P. Feedback positif composé et livré! 🎵",
+          "Ouf! Cette transaction était si fluide que j'ai failli la manquer! Vous êtes un magicien dans ce domaine. Je vous ai laissé un feedback positif magique. 🧙‍♂️"
+        ]
+      }
+    };
+
+   // Problem report templates
+const problemTemplates = {
+  payment: {
+    en: [
+      "I'm having an issue with the payment for our transaction. It seems the amount hasn't been received correctly. Please look into this matter urgently so we can resolve it. I've provided all necessary details in our chat.",
+      "There appears to be a problem with the payment transfer for our deal. The funds haven't reflected as expected. Kindly investigate this situation promptly and let me know how we can fix this together.",
+      "I'm writing to report a payment issue with our recent transaction. The amount doesn't match what we agreed upon. Please check your records and get back to me so we can sort this out amicably.",
+      "We seem to have a payment discrepancy in our transaction. I've double-checked on my end and something isn't adding up. Could you please verify from your side? Let's work together to resolve this quickly.",
+      "There's been a payment problem with our deal. The transferred amount doesn't correspond with our agreement. I'd appreciate your immediate attention to this matter so we can find a solution."
+    ],
+    fr: [
+      "Je rencontre un problème avec le paiement de notre transaction. Il semble que le montant n'a pas été reçu correctement. Veuillez examiner cette question de toute urgence afin que nous puissions la résoudre. J'ai fourni tous les détails nécessaires dans notre chat.",
+      "Il semble y avoir un problème avec le transfert de paiement pour notre affaire. Les fonds ne se sont pas reflétés comme prévu. Veuillez enquêter sur cette situation rapidement et faites-moi savoir comment nous pouvons résoudre ce problème ensemble.",
+      "J'écris pour signaler un problème de paiement avec notre récente transaction. Le montant ne correspond pas à ce que nous avons convenu. Veuillez vérifier vos dossiers et me revenir afin que nous puissions régler cela à l'amiable.",
+      "Nous semblons avoir une divergence de paiement dans notre transaction. J'ai vérifié de mon côté et quelque chose ne correspond pas. Pourriez-vous vérifier de votre côté? Travaillons ensemble pour résoudre ce problème rapidement.",
+      "Il y a eu un problème de paiement avec notre affaire. Le montant transféré ne correspond pas à notre accord. J'apprécierais votre attention immédiate à cette question afin que nous puissions trouver une solution."
+    ]
+  },
+  delay: {
+    en: [
+      "I'm concerned about the delay in our transaction. The funds haven't been received within the expected timeframe. Please provide an update on the status and let me know when I can expect completion.",
+      "Our transaction seems to be taking longer than usual. Could you please check on its status and inform me of any issues causing this delay? I'd appreciate a prompt response.",
+      "I'm following up on our transaction which appears to be delayed. Normally the process is much faster. Please investigate and let me know what's causing this hold-up and when it will be resolved.",
+      "There's been an unexpected delay in processing our transaction. Could you please look into this matter and provide an estimated time for completion? I'd like to understand what's causing this.",
+      "I wanted to bring to your attention that our transaction is experiencing delays beyond normal processing times. Please check on this and update me on when I can expect the funds to be available."
+    ],
+    fr: [
+      "Je suis préoccupé par le retard dans notre transaction. Les fonds n'ont pas été reçus dans le délai prévu. Veuillez fournir une mise à jour sur le statut et dites-moi quand je peux m'attendre à une conclusion.",
+      "Notre transaction semble prendre plus de temps que d'habitude. Pourriez-vous vérifier son statut et m'informer de tout problème causant ce retard? J'apprécierais une réponse rapide.",
+      "Je fais un suivi sur notre transaction qui semble être retardée. Normalement, le processus est beaucoup plus rapide. Veuillez enquêter et me dire ce qui cause ce retard et quand il sera résolu.",
+      "Il y a eu un retard inattendu dans le traitement de notre transaction. Pourriez-vous examiner cette question et fournir un délai estimé pour la conclusion? J'aimerais comprendre ce qui cause cela.",
+      "Je voulais porter à votre attention que notre transaction subit des retards au-delà des temps de traitement normaux. Veuillez vérifier cela et me mettre à jour sur quand je peux m'attendre à ce que les fonds soient disponibles."
+    ]
+  },
+  amount: {
+    en: [
+      "There's a discrepancy in the transaction amount. I received {{receivedAmount}} XOF instead of the agreed {{expectedAmount}} XOF. Please verify this difference and let me know how we can correct it.",
+      "I've noticed an inconsistency in the transferred amount. We agreed on {{expectedAmount}} XOF but only {{receivedAmount}} XOF was received. Could you please check your records and help resolve this issue?",
+      "The amount received doesn't match our agreement. I was expecting {{expectedAmount}} XOF but got {{receivedAmount}} XOF instead. Please investigate this difference and advise on next steps to fix it.",
+      "Our transaction shows a variance in the amount. The correct amount should be {{expectedAmount}} XOF, however {{receivedAmount}} XOF was transferred. Please look into this discrepancy urgently.",
+      "There's been an error in the transaction amount. Instead of {{expectedAmount}} XOF, the amount credited was {{receivedAmount}} XOF. I'd appreciate your help in rectifying this mistake promptly."
+    ],
+    fr: [
+      "Il y a une divergence dans le montant de la transaction. J'ai reçu {{receivedAmount}} XOF au lieu des {{expectedAmount}} XOF convenus. Veuillez vérifier cette différence et me dire comment nous pouvons la corriger.",
+      "J'ai remarqué une incohérence dans le montant transféré. Nous avons convenu de {{expectedAmount}} XOF mais seulement {{receivedAmount}} XOF ont été reçus. Pourriez-vous vérifier vos dossiers et aider à résoudre ce problème?",
+      "Le montant reçu ne correspond pas à notre accord. Je m'attendais à {{expectedAmount}} XOF mais j'ai reçu {{receivedAmount}} XOF à la place. Veuillez enquêter sur cette différence et conseiller sur les prochaines étapes pour la corriger.",
+      "Notre transaction montre une variance dans le montant. Le montant correct devrait être {{expectedAmount}} XOF, cependant {{receivedAmount}} XOF ont été transférés. Veuillez examiner cette divergence de toute urgence.",
+      "Il y a eu une erreur dans le montant de la transaction. Au lieu de {{expectedAmount}} XOF, le montant crédité était {{receivedAmount}} XOF. J'apprécierais votre aide pour rectifier cette erreur rapidement."
+    ]
+  },
+  account: {
+    en: [
+      "I'm experiencing issues with my account that are affecting our transaction. There seems to be a problem with the credentials or access. Please advise on how we can proceed to resolve this.",
+      "There's an account-related problem preventing our transaction from completing. The system isn't accepting the details provided. Could you please check if there are any restrictions or issues on your end?",
+      "I'm unable to complete our transaction due to an account problem. The platform is showing an error when I try to proceed. Please look into this matter and let me know what needs to be done to fix it.",
+      "Our transaction is being blocked by an account issue. I've verified my details but something isn't working. Could you please investigate and advise how we can get this resolved quickly?",
+      "There appears to be an account verification problem affecting our deal. The system won't let me proceed with the transaction. Please check if anything needs to be updated or confirmed from your side."
+    ],
+    fr: [
+      "Je rencontre des problèmes avec mon compte qui affectent notre transaction. Il semble y avoir un problème avec les identifiants ou l'accès. Veuillez me conseiller sur la façon dont nous pouvons procéder pour résoudre ce problème.",
+      "Il y a un problème lié au compte qui empêche notre transaction de se terminer. Le système n'accepte pas les détails fournis. Pourriez-vous vérifier s'il y a des restrictions ou des problèmes de votre côté?",
+      "Je ne peux pas terminer notre transaction en raison d'un problème de compte. La plateforme affiche une erreur lorsque j'essaie de continuer. Veuillez examiner cette question et me dire ce qui doit être fait pour la résoudre.",
+      "Notre transaction est bloquée par un problème de compte. J'ai vérifié mes détails mais quelque chose ne fonctionne pas. Pourriez-vous enquêter et conseiller comment nous pouvons résoudre ce problème rapidement?",
+      "Il semble y avoir un problème de vérification de compte affectant notre affaire. Le système ne me laisse pas continuer avec la transaction. Veuillez vérifier si quelque chose doit être mis à jour ou confirmé de votre côté."
+    ]
+  },
+  feedback: {
+    en: [
+      "There seems to be an issue with the feedback for our transaction. I haven't received it despite completing my part. Please check and ensure the feedback is properly recorded as agreed.",
+      "I'm following up on the feedback for our recent transaction which appears to be missing. We both fulfilled our obligations so the feedback should reflect this. Could you please look into this?",
+      "Our transaction was completed successfully but the feedback hasn't been applied correctly. Please verify and update the feedback to accurately represent our positive business interaction.",
+      "There's a discrepancy in the feedback received for our transaction. It doesn't match the quality of our interaction. Could you please review and correct this feedback to reflect the actual experience?",
+      "I noticed an error in the feedback provided for our deal. The rating doesn't correspond to our smooth transaction. Please check and adjust the feedback to properly represent our successful exchange."
+    ],
+    fr: [
+      "Il semble y avoir un problème avec le feedback pour notre transaction. Je ne l'ai pas reçu malgré avoir rempli ma part. Veuillez vérifier et vous assurer que le feedback est correctement enregistré comme convenu.",
+      "Je fais un suivi sur le feedback pour notre récente transaction qui semble manquer. Nous avons tous deux rempli nos obligations donc le feedback devrait refléter cela. Pourriez-vous examiner cela?",
+      "Notre transaction a été complétée avec succès mais le feedback n'a pas été appliqué correctement. Veuillez vérifier et mettre à jour le feedback pour représenter avec précision notre interaction commerciale positive.",
+      "Il y a une divergence dans le feedback reçu pour notre transaction. Il ne correspond pas à la qualité de notre interaction. Pourriez-vous revoir et corriger ce feedback pour refléter l'expérience réelle?",
+      "J'ai remarqué une erreur dans le feedback fourni pour notre affaire. La note ne correspond pas à notre transaction fluide. Veuillez vérifier et ajuster le feedback pour représenter correctement notre échange réussi."
+    ]
+  },
+  misunderstanding: {
+    en: [
+      "I believe there's been a misunderstanding in our transaction. The terms we're working with don't match what I understood. Let's clarify the details to ensure we're on the same page.",
+      "There seems to be some confusion regarding our deal. We may have interpreted the terms differently. Could we please review the agreement together to resolve this misunderstanding?",
+      "I think we have a misunderstanding about the transaction details. Some points need clarification to prevent any issues. Let's discuss this openly to get alignment before proceeding.",
+      "Our transaction appears to be affected by a mutual misunderstanding. The expectations don't align with the execution. Please let's revisit the terms and clarify any ambiguous points.",
+      "I'm concerned we might have a misunderstanding about this transaction. Certain aspects aren't matching my understanding. Could we please take time to review and ensure we agree on all terms?"
+    ],
+    fr: [
+      "Je crois qu'il y a eu un malentendu dans notre transaction. Les termes avec lesquels nous travaillons ne correspondent pas à ce que j'avais compris. Clarifions les détails pour nous assurer que nous sommes sur la même longueur d'onde.",
+      "Il semble y avoir une certaine confusion concernant notre affaire. Nous avons peut-être interprété les termes différemment. Pourrions-nous revoir l'accord ensemble pour résoudre ce malentendu?",
+      "Je pense que nous avons un malentendu sur les détails de la transaction. Certains points ont besoin de clarification pour éviter tout problème. Discutons-en ouvertement pour obtenir un alignement avant de continuer.",
+      "Notre transaction semble affectée par un malentendu mutuel. Les attentes ne correspondent pas à l'exécution. Revisitons les termes et clarifions tout point ambigu, s'il vous plaît.",
+      "Je crains que nous ayons un malentendu sur cette transaction. Certains aspects ne correspondent pas à ma compréhension. Pourrions-nous prendre le temps de revoir et nous assurer que nous sommes d'accord sur tous les termes?"
+    ]
+  }
+};
+    // Custom templates storage
+    let customTemplates = JSON.parse(localStorage.getItem('customTemplates')) || [];
+    let messageHistory = JSON.parse(localStorage.getItem('messageHistory')) || [];
+    let settings = JSON.parse(localStorage.getItem('settings')) || {
+      saveHistory: true,
+      darkMode: false,
+      autoCopy: true,
+      showEnglish: true,
+      defaultCategory: 'polite'
+    };
+
+    // Initialize settings
+    function initSettings() {
+      document.getElementById('saveHistory').checked = settings.saveHistory;
+      document.getElementById('darkMode').checked = settings.darkMode;
+      document.getElementById('autoCopy').checked = settings.autoCopy;
+      document.getElementById('showEnglish').checked = settings.showEnglish;
+      document.getElementById('defaultCategory').value = settings.defaultCategory;
+      
+      if (settings.darkMode) {
+        enableDarkMode();
+      }
+    }
+
+    function saveSettings() {
+      settings = {
+        saveHistory: document.getElementById('saveHistory').checked,
+        darkMode: document.getElementById('darkMode').checked,
+        autoCopy: document.getElementById('autoCopy').checked,
+        showEnglish: document.getElementById('showEnglish').checked,
+        defaultCategory: document.getElementById('defaultCategory').value
+      };
+      
+      localStorage.setItem('settings', JSON.stringify(settings));
+      
+      if (settings.darkMode) {
+        enableDarkMode();
+      } else {
+        disableDarkMode();
+      }
+      
+      showNotification('Settings saved successfully!');
+    }
+
+    function resetSettings() {
+      settings = {
+        saveHistory: true,
+        darkMode: false,
+        autoCopy: true,
+        showEnglish: true,
+        defaultCategory: 'polite'
+      };
+      
+      localStorage.setItem('settings', JSON.stringify(settings));
+      initSettings();
+      showNotification('Settings reset to defaults!');
+      disableDarkMode();
+    }
+
+    function enableDarkMode() {
+      document.body.style.backgroundColor = '#1a1a1a';
+      document.body.style.color = '#f0f0f0';
+      document.querySelector('.container').style.background = '#2d2d2d';
+      document.querySelector('.container').style.color = '#f0f0f0';
+      document.querySelectorAll('input, select, textarea').forEach(el => {
+        el.style.backgroundColor = '#3d3d3d';
+        el.style.color = '#f0f0f0';
+        el.style.borderColor = '#4d4d4d';
+      });
+      document.querySelectorAll('.message-container').forEach(el => {
+        el.style.backgroundColor = '#3d3d3d';
+      });
+    }
+
+    function disableDarkMode() {
+      document.body.style.backgroundColor = '#f4f4f9';
+      document.body.style.color = '#333';
+      document.querySelector('.container').style.background = 'white';
+      document.querySelector('.container').style.color = '#333';
+      document.querySelectorAll('input, select, textarea').forEach(el => {
+        el.style.backgroundColor = '';
+        el.style.color = '';
+        el.style.borderColor = '';
+      });
+      document.querySelectorAll('.message-container').forEach(el => {
+        el.style.backgroundColor = '#f8f9fa';
+      });
+    }
+
+    function openTab(tabId) {
+      // Hide all tab contents
+      const tabContents = document.getElementsByClassName('tab-content');
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove('active');
+      }
+
+      // Remove active class from all tab buttons
+      const tabButtons = document.getElementsByClassName('tab-btn');
+      for (let i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].classList.remove('active');
+      }
+
+      // Show the selected tab content and mark button as active
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+
+      // Load history if history tab is opened
+      if (tabId === 'historyTab') {
+        loadHistory();
+      }
+    }
+
+    function addEmoji(emoji) {
+      const requestedAmount = document.getElementById('requestedAmount');
+      requestedAmount.value = (requestedAmount.value || '') + emoji;
+    }
+
+    function addThanksEmoji(emoji) {
+      const englishThanksMessage = document.getElementById('englishThanksMessage');
+      englishThanksMessage.textContent = (englishThanksMessage.textContent || '') + emoji;
+      const frenchThanksMessage = document.getElementById('frenchThanksMessage');
+      frenchThanksMessage.textContent = (frenchThanksMessage.textContent || '') + emoji;
+    }
+
+    function generateMessages() {
+      const requestedAmount = parseFloat(document.getElementById('requestedAmount').value.replace(/[^0-9.]/g, ''));
+      const removeAmount = parseFloat(document.getElementById('removeAmount').value.replace(/[^0-9.]/g, '') || 0);
+      const destination = document.getElementById('destination').value;
+      const selectedCategory = document.getElementById('category').value;
+      const messageContainer = document.getElementById('messageContainer');
+      const englishMessageDiv = document.getElementById('englishMessage');
+      const frenchMessageDiv = document.getElementById('frenchMessage');
+      const categoryTag = document.getElementById('messageCategory');
+      const copyBtn = document.getElementById('copyBtn');
+      const copyEngBtn = document.getElementById('copyEngBtn');
+
+      if (!requestedAmount || requestedAmount <= 0) {
+        alert("Please enter a valid requested amount.");
+        return;
+      }
+
+      let sentAmount;
+      if (destination === 'international') {
+        sentAmount = requestedAmount - (requestedAmount * 0.05);
+      } else if (destination === 'mali') {
+        sentAmount = requestedAmount - (requestedAmount * 0.03);
+      } else if (destination === 'senegal') {
+        sentAmount = requestedAmount - (requestedAmount * 0.04);
+      } else if (destination === 'ivorycoast') {
+        sentAmount = requestedAmount - (requestedAmount * 0.035);
+      } else if (destination === 'togo') {
+        sentAmount = requestedAmount - (requestedAmount * 0.025);
+      } else { // burkina and others
+        if (!removeAmount || removeAmount <= 0 || removeAmount >= requestedAmount) {
+          alert("Please enter a valid amount to remove less than the requested amount.");
+          return;
+        }
+        sentAmount = requestedAmount - removeAmount;
+      }
+
+      const categories = selectedCategory === 'all' ? 
+        ['polite', 'humble', 'begging', 'formal', 'urgent', 'business', 'friendly', 'repeat', 'negotiate'] : 
+        [selectedCategory];
+
+      let allEnglishMessages = [];
+      let allFrenchMessages = [];
+      let categoryNames = [];
+
+      categories.forEach(category => {
+        const englishMessages = messageTemplates[category].en;
+        const frenchMessages = messageTemplates[category].fr;
+
+        englishMessages.forEach((msg, index) => {
+          allEnglishMessages.push(msg);
+          allFrenchMessages.push(frenchMessages[index]);
+          categoryNames.push(category);
+        });
+      });
+
+      const randomIndex = Math.floor(Math.random() * allEnglishMessages.length);
+      const selectedEnglishMessage = allEnglishMessages[randomIndex];
+      const selectedFrenchMessage = allFrenchMessages[randomIndex];
+      const selectedCategoryName = categoryNames[randomIndex];
+
+      const finalEnglishMessage = selectedEnglishMessage
+        .replace(/{{requestedAmount}}/g, requestedAmount)
+        .replace(/{{sentAmount}}/g, sentAmount.toFixed(2));
+
+      const finalFrenchMessage = selectedFrenchMessage
+        .replace(/{{requestedAmount}}/g, requestedAmount)
+        .replace(/{{sentAmount}}/g, sentAmount.toFixed(2));
+
+      englishMessageDiv.textContent = finalEnglishMessage;
+      frenchMessageDiv.textContent = finalFrenchMessage;
+      categoryTag.textContent = selectedCategoryName;
+
+      messageContainer.style.display = 'block';
+      copyBtn.style.display = 'block';
+      copyEngBtn.style.display = 'block';
+
+      if (settings.autoCopy) {
+        copyFrenchMessage();
+      }
+
+      // Save to history
+      if (settings.saveHistory) {
+        const historyItem = {
+          type: 'request',
+          english: finalEnglishMessage,
+          french: finalFrenchMessage,
+          category: selectedCategoryName,
+          timestamp: new Date().toISOString()
+        };
+        messageHistory.unshift(historyItem);
+        localStorage.setItem('messageHistory', JSON.stringify(messageHistory));
+      }
+    }
+
+    function generateThankYouMessages() {
+      const selectedCategory = document.getElementById('thanksCategory').value;
+      const thanksMessageContainer = document.getElementById('thanksMessageContainer');
+      const englishThanksMessageDiv = document.getElementById('englishThanksMessage');
+      const frenchThanksMessageDiv = document.getElementById('frenchThanksMessage');
+      const thanksCategoryTag = document.getElementById('thanksMessageCategory');
+      const copyThanksBtn = document.getElementById('copyThanksBtn');
+      const copyThanksEngBtn = document.getElementById('copyThanksEngBtn');
+
+      const categories = selectedCategory === 'all' ? 
+        ['friendly', 'professional', 'grateful', 'warm', 'formal', 'enthusiastic', 'brief', 'detailed', 'humorous'] : 
+        [selectedCategory];
+
+      let allEnglishMessages = [];
+      let allFrenchMessages = [];
+      let categoryNames = [];
+
+      categories.forEach(category => {
+        const englishMessages = thankYouTemplates[category].en;
+        const frenchMessages = thankYouTemplates[category].fr;
+
+        englishMessages.forEach((msg, index) => {
+          allEnglishMessages.push(msg);
+          allFrenchMessages.push(frenchMessages[index]);
+          categoryNames.push(category);
+        });
+      });
+
+      const randomIndex = Math.floor(Math.random() * allEnglishMessages.length);
+      const selectedEnglishMessage = allEnglishMessages[randomIndex];
+      const selectedFrenchMessage = allFrenchMessages[randomIndex];
+      const selectedCategoryName = categoryNames[randomIndex];
+
+      englishThanksMessageDiv.textContent = selectedEnglishMessage;
+      frenchThanksMessageDiv.textContent = selectedFrenchMessage;
+      thanksCategoryTag.textContent = selectedCategoryName;
+
+      thanksMessageContainer.style.display = 'block';
+      copyThanksBtn.style.display = 'block';
+      copyThanksEngBtn.style.display = 'block';
+
+      if (settings.autoCopy) {
+        copyFrenchThanksMessage();
+      }
+
+      // Save to history
+      if (settings.saveHistory) {
+        const historyItem = {
+          type: 'thanks',
+          english: selectedEnglishMessage,
+          french: selectedFrenchMessage,
+          category: selectedCategoryName,
+          timestamp: new Date().toISOString()
+        };
+        messageHistory.unshift(historyItem);
+        localStorage.setItem('messageHistory', JSON.stringify(messageHistory));
+      }
+    }
+
+    function generateProblemMessages() {
+      const problemType = document.getElementById('problemType').value;
+      const problemSeverity = document.getElementById('problemSeverity').value;
+      const problemDetails = document.getElementById('problemDetails').value;
+      const problemMessageContainer = document.getElementById('problemMessageContainer');
+      const englishProblemMessage = document.getElementById('englishProblemMessage');
+      const frenchProblemMessage = document.getElementById('frenchProblemMessage');
+      const problemCategoryTag = document.getElementById('problemMessageCategory');
+      const copyProblemBtn = document.getElementById('copyProblemBtn');
+      const copyProblemEngBtn = document.getElementById('copyProblemEngBtn');
+
+      const types = problemType === 'all' ? 
+  ['payment', 'delay', 'amount', 'account', 'feedback', 'misunderstanding'] : 
+  [problemType];
+      let allEnglishMessages = [];
+      let allFrenchMessages = [];
+      let typeNames = [];
+
+      types.forEach(type => {
+        const englishMessages = problemTemplates[type].en;
+        const frenchMessages = problemTemplates[type].fr;
+
+        englishMessages.forEach((msg, index) => {
+          allEnglishMessages.push(msg);
+          allFrenchMessages.push(frenchMessages[index]);
+          typeNames.push(type);
+        });
+      });
+
+      const randomIndex = Math.floor(Math.random() * allEnglishMessages.length);
+      let selectedEnglishMessage = allEnglishMessages[randomIndex];
+      let selectedFrenchMessage = allFrenchMessages[randomIndex];
+      const selectedTypeName = typeNames[randomIndex];
+
+      // Add severity indicators
+      if (problemSeverity === 'urgent') {
+        selectedEnglishMessage = "URGENT: " + selectedEnglishMessage;
+        selectedFrenchMessage = "URGENT: " + selectedFrenchMessage;
+      } else if (problemSeverity === 'serious') {
+        selectedEnglishMessage = "IMPORTANT: " + selectedEnglishMessage;
+        selectedFrenchMessage = "IMPORTANT: " + selectedFrenchMessage;
+      }
+
+      // Add custom details if provided
+      if (problemDetails) {
+        selectedEnglishMessage += "\n\nAdditional details: " + problemDetails;
+        selectedFrenchMessage += "\n\nDétails supplémentaires: " + problemDetails;
+      }
+
+      englishProblemMessage.textContent = selectedEnglishMessage;
+      frenchProblemMessage.textContent = selectedFrenchMessage;
+      problemCategoryTag.textContent = selectedTypeName;
+
+      problemMessageContainer.style.display = 'block';
+      copyProblemBtn.style.display = 'block';
+      copyProblemEngBtn.style.display = 'block';
+
+      if (settings.autoCopy) {
+        copyFrenchProblemMessage();
+      }
+
+      // Save to history
+      if (settings.saveHistory) {
+        const historyItem = {
+          type: 'problem',
+          english: selectedEnglishMessage,
+          french: selectedFrenchMessage,
+          category: selectedTypeName,
+          severity: problemSeverity,
+          timestamp: new Date().toISOString()
+        };
+        messageHistory.unshift(historyItem);
+        localStorage.setItem('messageHistory', JSON.stringify(messageHistory));
+      }
+    }
+
+    function saveCustomTemplate() {
+      const englishMessage = document.getElementById('englishMessage').textContent;
+      const frenchMessage = document.getElementById('frenchMessage').textContent;
+      
+      if (!englishMessage || !frenchMessage) {
+        alert("Please generate messages first before saving as template.");
+        return;
+      }
+      
+      const templateName = prompt("Enter a name for this template:");
+      if (!templateName) return;
+      
+      const newTemplate = {
+        name: templateName,
+        english: englishMessage,
+        french: frenchMessage,
+        category: 'request',
+        timestamp: new Date().toISOString()
+      };
+      
+      customTemplates.push(newTemplate);
+      localStorage.setItem('customTemplates', JSON.stringify(customTemplates));
+      showNotification('Template saved successfully!');
+    }
+
+    function saveThanksTemplate() {
+      const englishMessage = document.getElementById('englishThanksMessage').textContent;
+      const frenchMessage = document.getElementById('frenchThanksMessage').textContent;
+      
+      if (!englishMessage || !frenchMessage) {
+        alert("Please generate messages first before saving as template.");
+        return;
+      }
+      
+      const templateName = prompt("Enter a name for this template:");
+      if (!templateName) return;
+      
+      const newTemplate = {
+        name: templateName,
+        english: englishMessage,
+        french: frenchMessage,
+        category: 'thanks',
+        timestamp: new Date().toISOString()
+      };
+      
+      customTemplates.push(newTemplate);
+      localStorage.setItem('customTemplates', JSON.stringify(customTemplates));
+      showNotification('Template saved successfully!');
+    }
+
+    function saveCustomTemplate() {
+      const templateName = document.getElementById('customTemplateName').value;
+      const englishTemplate = document.getElementById('customEnglish').value;
+      const frenchTemplate = document.getElementById('customFrench').value;
+      const category = document.getElementById('customCategory').value;
+      
+      if (!templateName || !englishTemplate || !frenchTemplate) {
+        alert("Please fill in all fields before saving.");
+        return;
+      }
+      
+      const newTemplate = {
+        name: templateName,
+        english: englishTemplate,
+        french: frenchTemplate,
+        category: category,
+        timestamp: new Date().toISOString()
+      };
+      
+      customTemplates.push(newTemplate);
+      localStorage.setItem('customTemplates', JSON.stringify(customTemplates));
+      
+      // Clear the form
+      document.getElementById('customTemplateName').value = '';
+      document.getElementById('customEnglish').value = '';
+      document.getElementById('customFrench').value = '';
+      
+      showNotification('Custom template saved successfully!');
+      loadCustomTemplates();
+    }
+
+    function loadCustomTemplates() {
+      const container = document.getElementById('customTemplatesContainer');
+      container.innerHTML = '<h3>My Custom Templates</h3>';
+      
+      if (customTemplates.length === 0) {
+        container.innerHTML += '<p>No custom templates saved yet.</p>';
+        return;
+      }
+      
+      const table = document.createElement('table');
+      table.style.width = '100%';
+      table.style.borderCollapse = 'collapse';
+      table.style.marginTop = '10px';
+      
+      // Create header
+      const header = table.createTHead();
+      const headerRow = header.insertRow();
+      headerRow.style.backgroundColor = '#3498db';
+      headerRow.style.color = 'white';
+      
+      const headers = ['Name', 'Category', 'English Preview', 'French Preview', 'Actions'];
+      headers.forEach(text => {
+        const th = document.createElement('th');
+        th.textContent = text;
+        th.style.padding = '10px';
+        th.style.textAlign = 'left';
+        headerRow.appendChild(th);
+      });
+      
+      // Create body
+      const body = table.createTBody();
+      
+      customTemplates.forEach((template, index) => {
+        const row = body.insertRow();
+        row.style.borderBottom = '1px solid #ddd';
+        
+        // Name
+        const nameCell = row.insertCell();
+        nameCell.textContent = template.name;
+        nameCell.style.padding = '10px';
+        
+        // Category
+        const categoryCell = row.insertCell();
+        categoryCell.textContent = template.category;
+        categoryCell.style.padding = '10px';
+        
+        // English Preview
+        const englishCell = row.insertCell();
+        englishCell.textContent = template.english.length > 50 ? 
+          template.english.substring(0, 50) + '...' : template.english;
+        englishCell.style.padding = '10px';
+        
+        // French Preview
+        const frenchCell = row.insertCell();
+        frenchCell.textContent = template.french.length > 50 ? 
+          template.french.substring(0, 50) + '...' : template.french;
+        frenchCell.style.padding = '10px';
+        
+        // Actions
+        const actionsCell = row.insertCell();
+        actionsCell.style.padding = '10px';
+        
+        const useButton = document.createElement('button');
+        useButton.textContent = 'Use';
+        useButton.style.marginRight = '5px';
+        useButton.style.padding = '5px 10px';
+        useButton.style.fontSize = '12px';
+        useButton.onclick = () => useCustomTemplate(template);
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.style.padding = '5px 10px';
+        deleteButton.style.fontSize = '12px';
+        deleteButton.style.backgroundColor = '#e74c3c';
+        deleteButton.onclick = () => deleteCustomTemplate(index);
+        
+        actionsCell.appendChild(useButton);
+        actionsCell.appendChild(deleteButton);
+      });
+      
+      container.appendChild(table);
+    }
+
+    function useCustomTemplate(template) {
+      if (template.category === 'request') {
+        document.getElementById('englishMessage').textContent = template.english;
+        document.getElementById('frenchMessage').textContent = template.french;
+        document.getElementById('messageContainer').style.display = 'block';
+        document.getElementById('copyBtn').style.display = 'block';
+        document.getElementById('copyEngBtn').style.display = 'block';
+        openTab('requestTab');
+      } else if (template.category === 'thanks') {
+        document.getElementById('englishThanksMessage').textContent = template.english;
+        document.getElementById('frenchThanksMessage').textContent = template.french;
+        document.getElementById('thanksMessageContainer').style.display = 'block';
+        document.getElementById('copyThanksBtn').style.display = 'block';
+        document.getElementById('copyThanksEngBtn').style.display = 'block';
+        openTab('thanksTab');
+      } else if (template.category === 'problem') {
+        document.getElementById('englishProblemMessage').textContent = template.english;
+        document.getElementById('frenchProblemMessage').textContent = template.french;
+        document.getElementById('problemMessageContainer').style.display = 'block';
+        document.getElementById('copyProblemBtn').style.display = 'block';
+        document.getElementById('copyProblemEngBtn').style.display = 'block';
+        openTab('problemTab');
+      } else {
+        // For other categories, just show in request tab
+        document.getElementById('englishMessage').textContent = template.english;
+        document.getElementById('frenchMessage').textContent = template.french;
+        document.getElementById('messageContainer').style.display = 'block';
+        document.getElementById('copyBtn').style.display = 'block';
+        document.getElementById('copyEngBtn').style.display = 'block';
+        openTab('requestTab');
+      }
+      
+      if (settings.autoCopy) {
+        if (template.category === 'thanks') {
+          copyFrenchThanksMessage();
+        } else if (template.category === 'problem') {
+          copyFrenchProblemMessage();
+        } else {
+          copyFrenchMessage();
+        }
+      }
+    }
+
+    function deleteCustomTemplate(index) {
+      if (confirm("Are you sure you want to delete this template?")) {
+        customTemplates.splice(index, 1);
+        localStorage.setItem('customTemplates', JSON.stringify(customTemplates));
+        loadCustomTemplates();
+        showNotification('Template deleted successfully!');
+      }
+    }
+
+    function loadHistory() {
+      const historyList = document.getElementById('historyList');
+      historyList.innerHTML = '';
+      
+      if (messageHistory.length === 0) {
+        historyList.innerHTML = '<p>No history yet. Generated messages will appear here.</p>';
+        return;
+      }
+      
+      messageHistory.forEach((item, index) => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        
+        const typeBadge = document.createElement('span');
+        typeBadge.textContent = item.type.toUpperCase();
+        typeBadge.style.fontWeight = 'bold';
+        typeBadge.style.marginRight = '10px';
+        typeBadge.style.color = 
+          item.type === 'request' ? '#3498db' : 
+          item.type === 'thanks' ? '#2ecc71' : 
+          '#e74c3c';
+        
+        const dateSpan = document.createElement('span');
+        dateSpan.textContent = new Date(item.timestamp).toLocaleString();
+        dateSpan.style.color = '#7f8c8d';
+        dateSpan.style.fontSize = '12px';
+        dateSpan.style.marginRight = '10px';
+        
+        const previewSpan = document.createElement('span');
+        previewSpan.textContent = item.french.length > 50 ? 
+          item.french.substring(0, 50) + '...' : item.french;
+        
+        historyItem.appendChild(typeBadge);
+        historyItem.appendChild(dateSpan);
+        historyItem.appendChild(previewSpan);
+        
+        historyItem.onclick = () => {
+          if (item.type === 'request') {
+            document.getElementById('englishMessage').textContent = item.english;
+            document.getElementById('frenchMessage').textContent = item.french;
+            document.getElementById('messageCategory').textContent = item.category || 'request';
+            document.getElementById('messageContainer').style.display = 'block';
+            document.getElementById('copyBtn').style.display = 'block';
+            document.getElementById('copyEngBtn').style.display = 'block';
+            openTab('requestTab');
+          } else if (item.type === 'thanks') {
+            document.getElementById('englishThanksMessage').textContent = item.english;
+            document.getElementById('frenchThanksMessage').textContent = item.french;
+            document.getElementById('thanksMessageCategory').textContent = item.category || 'thanks';
+            document.getElementById('thanksMessageContainer').style.display = 'block';
+            document.getElementById('copyThanksBtn').style.display = 'block';
+            document.getElementById('copyThanksEngBtn').style.display = 'block';
+            openTab('thanksTab');
+          } else if (item.type === 'problem') {
+            document.getElementById('englishProblemMessage').textContent = item.english;
+            document.getElementById('frenchProblemMessage').textContent = item.french;
+            document.getElementById('problemMessageCategory').textContent = item.category || 'problem';
+            document.getElementById('problemMessageContainer').style.display = 'block';
+            document.getElementById('copyProblemBtn').style.display = 'block';
+            document.getElementById('copyProblemEngBtn').style.display = 'block';
+            openTab('problemTab');
+          }
+        };
+        
+        historyList.appendChild(historyItem);
+      });
+    }
+
+    function clearHistory() {
+      if (confirm("Are you sure you want to clear all history? This cannot be undone.")) {
+        messageHistory = [];
+        localStorage.setItem('messageHistory', JSON.stringify(messageHistory));
+        loadHistory();
+        showNotification('History cleared successfully!');
+      }
+    }
+
+    function copyFrenchMessage() {
+      const frenchMessage = document.getElementById('frenchMessage').textContent;
+      copyToClipboard(frenchMessage);
+    }
+
+    function copyEnglishMessage() {
+      const englishMessage = document.getElementById('englishMessage').textContent;
+      copyToClipboard(englishMessage);
+    }
+
+    function copyFrenchThanksMessage() {
+      const frenchMessage = document.getElementById('frenchThanksMessage').textContent;
+      copyToClipboard(frenchMessage);
+    }
+
+    function copyEnglishThanksMessage() {
+      const englishMessage = document.getElementById('englishThanksMessage').textContent;
+      copyToClipboard(englishMessage);
+    }
+
+    function copyFrenchProblemMessage() {
+      const frenchMessage = document.getElementById('frenchProblemMessage').textContent;
+      copyToClipboard(frenchMessage);
+    }
+
+    function copyEnglishProblemMessage() {
+      const englishMessage = document.getElementById('englishProblemMessage').textContent;
+      copyToClipboard(englishMessage);
+    }
+
+    function copyToClipboard(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.top = '0';
+      textArea.style.left = '0';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          showCopyNotification();
+        } else {
+          alert('Copy failed. Please select and copy manually.');
+        }
+      } catch (err) {
+        console.error('Copy error:', err);
+        alert('Copy failed. Please select and copy manually.');
+      }
+      
+      document.body.removeChild(textArea);
+    }
+
+    function showCopyNotification() {
+      const notification = document.getElementById('copyNotification');
+      notification.style.display = 'block';
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 2000);
+    }
+
+    function showNotification(message) {
+      const notification = document.getElementById('copyNotification');
+      notification.textContent = message;
+      notification.style.display = 'block';
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 2000);
+    }
+
+    // Initialize the app
+    window.onload = function() {
+      initSettings();
+      loadCustomTemplates();
+      
+      // Set default category from settings
+      document.getElementById('category').value = settings.defaultCategory;
+    };
+  </script>
+</body>
+</html>
