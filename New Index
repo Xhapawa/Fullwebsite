@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Your Financial Toolkit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #eef2f3, #8e9eab);
+            color: #333;
+        }
+
+        nav {
+            background-color: #2c3e50;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #34495e;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #1abc9c;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown > a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .dropdown > a:hover {
+            color: #1abc9c;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+            background: url('assets/images/hero-banner.jpg') no-repeat center center/cover;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .hero button {
+            background: #1abc9c;
+            border: none;
+            padding: 15px 30px;
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .hero button:hover {
+            background: #16a085;
+        }
+
+        .tools {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .tools h2 {
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+
+        .tool-cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tool-card {
+            background: white;
+            max-width: 300px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .tool-card img {
+            max-width: 80px;
+            margin-bottom: 15px;
+        }
+
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .tool-card p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: #1abc9c;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="menu">
+            <!-- Category 1: Generators -->
+            <div class="dropdown">
+                <a href="#">Generators</a>
+                <div class="dropdown-content">
+                    <a href="generator/buy-generator.html">Buy Generator</a>
+                    <a href="generator/sell-generator.html">Sell Generator</a>
+                    <a href="naija-wisdom-generator.html">Naija Wisdom Generator</a>
+                </div>
+            </div>
+            
+            <!-- Category 2: Currency Arbitrage -->
+            <div class="dropdown">
+                <a href="#">Currency Arbitrage</a>
+                <div class="dropdown-content">
+                    <a href="arbitrage/cfa-to-naira-arbitrage.html">CFA to Naira Arbitrage</a>
+                    <a href="arbitrage/naira-to-cfa-arbitrage.html">Naira to CFA Arbitrage</a>
+                </div>
+            </div>
+
+            <!-- Category 3: Dashboards -->
+            <div class="dropdown">
+                <a href="#">Dashboards</a>
+                <div class="dropdown-content">
+                    <a href="client-dashboard.html">Client Dashboard</a>
+                    <a href="currency-exchange-ledger.html">Currency Exchange Ledger</a>
+                    <a href="usdt-p2p-trading-ledger.html">USDT P2P Trading Ledger</a>
+                </div>
+            </div>
+
+            <!-- Category 4: Calculators -->
+            <div class="dropdown">
+                <a href="#">Calculators</a>
+                <div class="dropdown-content">
+                    <a href="xof-to-ngn-arbitrage-calculator.html">XOF to NGN Calculator</a>
+                    <a href="ngn-to-xof-calculator.html">NGN to XOF Calculator</a>
+                    <a href="trading-cycle-calculator.html">Trading Cycle Calculator</a>
+                    <a href="xof-ads-profit-calculator.html">XOF Ads Profit Calculator</a>
+                    <a href="p2p-profit-party-calculator.html">P2P Profit Party Calculator</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Your Financial Toolkit</h1>
+        <p>Empowering traders and investors with powerful tools to simplify finances.</p>
+        <button onclick="scrollToSection('tools')">Explore Tools</button>
+    </section>
+
+    <section id="tools" class="tools">
+        <h2>Our Tools</h2>
+        <div class="tool-cards">
+            <div class="tool-card" data-aos="fade-up">
+                <img src="assets/icons/naija-wisdom.png" alt="Naija Wisdom Generator">
+                <h3>Naija Wisdom Generator</h3>
+                <p>Get insightful and motivational quotes tailored to your needs.</p>
+                <button onclick="location.href='naija-wisdom-generator.html'">Learn More</button>
+            </div>
+            <div class="tool-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="assets/icons/buy-generator.png" alt="Buy Generator">
+                <h3>Buy Generator</h3>
+                <p>Optimize your purchasing strategies with ease.</p>
+                <button onclick="location.href='generator/buy-generator.html'">Learn More</button>
+            </div>
+            <div class="tool-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="assets/icons/sell-generator.png" alt="Sell Generator">
+                <h3>Sell Generator</h3>
+                <p>Plan your sales and maximize your profits.</p>
+                <button onclick="location.href='generator/sell-generator.html'">Learn More</button>
+            </div>
+            <div class="tool-card" data-aos="fade-up" data-aos-delay="300">
+                <img src="assets/icons/cfa-to-naira.png" alt="CFA to Naira Arbitrage">
+                <h3>CFA to Naira Arbitrage</h3>
+                <p>Find profitable arbitrage opportunities from CFA to Naira.</p>
+                <button onclick="location.href='arbitrage/cfa-to-naira-arbitrage.html'">Learn More</button>
+            </div>
+            <div class="tool-card" data-aos="fade-up" data-aos-delay="400">
+                <img src="assets/icons/naira-to-cfa.png" alt="Naira to CFA Arbitrage">
+                <h3>Naira to CFA Arbitrage</h3>
+                <p>Find profitable arbitrage opportunities from Naira to CFA.</p>
+                <button onclick="location.href='arbitrage/naira-to-cfa-arbitrage.html'">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Your Financial Toolkit | <a href="contact.html">Contact Us</a></p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
